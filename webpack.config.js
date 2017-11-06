@@ -4,7 +4,7 @@ module.exports = {
     path: __dirname,
     filename: "DateTimePicker.js",
     library: "DateTimePicker",
-    libraryTarget: "umd",
+    libraryTarget: "umd"
   },
   module: {
     rules: [{ test: /\.js$/, use: "babel-loader" }]
