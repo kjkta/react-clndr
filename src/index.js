@@ -24,10 +24,15 @@ const styles = {
     border: "1px solid #eee",
     borderRadius: 3,
     transition: "100ms all"
+  },
+  tableCell: {
+    textAlign: "center",
+    userSelect: "none",
+    width: 45
   }
 };
 
-const daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const daysOfTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 const getDatesInMonth = (date: Moment) => {
   const firstDayOfMonth = date.date(1);
@@ -77,7 +82,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
           dangerouslySetInnerHTML={{
             __html: `
             .arrow:active {
-                box-shadow: inset 2px 2px 1px #eee
+                box-shadow: inset 2px 2px 1px rgba(0, 166, 153, .4)
               }
         `
           }}
@@ -96,7 +101,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
             textAlign: "center",
             ...(this.state.showCal
               ? {
-                  borderColor: "green"
+                  borderColor: "#00a699"
                 }
               : {})
           }}
@@ -122,7 +127,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
-                margin: 10
+                margin: 15
               }}
             >
               <div
@@ -135,13 +140,13 @@ export default class DateTimePicker extends React.Component<Props, State> {
               >
                 <div
                   className="arrow"
-                  style={styles.arrow}
+                  style={{ ...styles.arrow, transform: "rotate(180deg)" }}
                   onClick={() =>
                     this.setState({
                       shownMonth: this.state.shownMonth.subtract(1, "month")
                     })}
                 >
-                  {svgs.leftArrow}
+                  {svgs.arrow}
                 </div>
 
                 <span style={{ padding: 10, fontWeight: "bold" }}>
@@ -155,19 +160,21 @@ export default class DateTimePicker extends React.Component<Props, State> {
                       shownMonth: this.state.shownMonth.add(1, "month")
                     })}
                 >
-                  {svgs.rightArrow}
+                  {svgs.arrow}
                 </div>
               </div>
-              <table style={{ width: "100%", flex: 1 }}>
+              <table
+                style={{ tableLayout: "fixed", borderCollapse: "collapse" }}
+              >
                 <thead>
                   <tr>
                     {daysOfTheWeek.map(day => (
                       <td
                         style={{
-                          textAlign: "center",
-                          padding: 10,
-                          userSelect: "none",
-                          cursor: "default"
+                          ...styles.tableCell,
+                          cursor: "default",
+                          color: "#6b6b6b",
+                          fontSize: 12
                         }}
                       >
                         {day}
@@ -177,7 +184,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 </thead>
                 <tbody>
                   {datesInMonthByWeek.map(weekDays => (
-                    <tr>
+                    <tr style={{ height: 45 }}>
                       {weekDays.map(
                         day =>
                           // Render days in week for each week
@@ -185,14 +192,16 @@ export default class DateTimePicker extends React.Component<Props, State> {
                             <td
                               key={day.date.date()}
                               style={{
-                                textAlign: "center",
+                                ...styles.tableCell,
+                                borderWidth: 1,
+                                borderStyle: "solid",
+                                borderColor: "#ccc",
                                 cursor: "pointer",
-                                userSelect: "none",
-                                borderRadius: 3,
-                                padding: 10,
                                 ...(day.date.isSame(this.state.value, "day")
                                   ? {
-                                      backgroundColor: "yellow"
+                                      borderColor: "#00a699",
+                                      backgroundColor: "#00a699",
+                                      color: "white"
                                     }
                                   : {})
                               }}
