@@ -33,7 +33,7 @@ const getDatesInMonth = (date: Moment) => {
   return [...Array(date.daysInMonth()).keys()].map(i => {
     const date = moment(firstDayOfMonth).add(i, "days");
     const dayWeekIndex = date.day();
-    weekIndex = (dayWeekIndex === 0 && i != 0) ? weekIndex + 1 : weekIndex;
+    weekIndex = dayWeekIndex === 0 && i != 0 ? weekIndex + 1 : weekIndex;
     return {
       index: 0,
       dayWeekIndex,
@@ -43,31 +43,33 @@ const getDatesInMonth = (date: Moment) => {
   });
 };
 
-const getMonthWeeks = (days) => {
+const getMonthWeeks = days => {
   return [
-    getDaysInWeek(days.filter(({weekIndex}) => weekIndex === 0)),
-    getDaysInWeek(days.filter(({weekIndex}) => weekIndex === 1)),
-    getDaysInWeek(days.filter(({weekIndex}) => weekIndex === 2)),
-    getDaysInWeek(days.filter(({weekIndex}) => weekIndex === 3)),
-  ]
-}
+    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === 0)),
+    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === 1)),
+    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === 2)),
+    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === 3))
+  ];
+};
 
-const getDaysInWeek = (days) => {
+const getDaysInWeek = days => {
   return daysOfTheWeek.map((name, i) => {
-    const dayInMonth = days.find(({dayWeekIndex}) => dayWeekIndex === i)
-    return dayInMonth ? dayInMonth : {}
-  })
-}
+    const dayInMonth = days.find(({ dayWeekIndex }) => dayWeekIndex === i);
+    return dayInMonth ? dayInMonth : {};
+  });
+};
 
 export default class DateTimePicker extends React.Component<Props, State> {
   state = {
     value: this.props.initialValue || moment(),
     showModal: true,
-    shownMonth: this.props.initialValue || moment(),
+    shownMonth: this.props.initialValue || moment()
   };
 
   render() {
-    const datesInMonthByWeek = getMonthWeeks(getDatesInMonth(this.state.shownMonth));
+    const datesInMonthByWeek = getMonthWeeks(
+      getDatesInMonth(this.state.shownMonth)
+    );
     return (
       <div>
         <input
@@ -110,21 +112,33 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   <tr>{daysOfTheWeek.map(day => <td>{day}</td>)}</tr>
                 </thead>
                 <tbody>
-                  {
-                    datesInMonthByWeek.map(weekDays => 
-                      <tr>
-                      {weekDays.map(day => 
-                        // Render days in week for each week
-                        <td style={{
-                          textAlign: "center",
-                          cursor: "pointer"
-                        }}
-                        onClick={() => this.setState({ })}>
-                          {day.date ? day.date.date() : ""}
-                        </td>
+                  {datesInMonthByWeek.map(weekDays => (
+                    <tr>
+                      {weekDays.map(
+                        day =>
+                          // Render days in week for each week
+
+                          day.date ? (
+                            <td
+                              style={{
+                                textAlign: "center",
+                                cursor: "pointer",
+                                ...(day.date.isSame(this.state.value, "day")
+                                  ? {
+                                      backgroundColor: "yellow"
+                                    }
+                                  : {})
+                              }}
+                              onClick={() => this.setState({ value: day.date })}
+                            >
+                              {day.date.date()}
+                            </td>
+                          ) : (
+                            <td />
+                          )
                       )}
                     </tr>
-                  )}
+                  ))}
                 </tbody>
               </table>
             </div>
