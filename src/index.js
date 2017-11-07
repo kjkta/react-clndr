@@ -2,6 +2,7 @@
 import React from "react";
 import moment from "moment";
 import type Moment from "moment";
+import * as svgs from "./svgs";
 
 type Props = {
   initialValue?: Moment,
@@ -101,13 +102,41 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
-                margin: 20
+                margin: 10
               }}
             >
-              <span style={{ padding: 10, fontWeight: "bold" }}>
-                {this.state.value.format("MMMM YYYY")}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignContent: "center",
+                  width: "100%"
+              }}
+            >
+                <div
+                  style={styles.arrow}
+                  onClick={() =>
+                    this.setState({
+                      shownMonth: this.state.shownMonth.subtract(1, "month")
+                    })}
+                >
+                  {svgs.leftArrow}
+                </div>
+
+                <span style={{ padding: "10 ", fontWeight: "bold" }}>
+                  {this.state.shownMonth.format("MMMM YYYY")}
               </span>
-              <table>
+                <div
+                  style={styles.arrow}
+                  onClick={() =>
+                    this.setState({
+                      shownMonth: this.state.shownMonth.add(1, "month")
+                    })}
+                >
+                  {svgs.rightArrow}
+                </div>
+              </div>
+              <table style={{ width: "100%", flex: 1}}>
                 <thead>
                   <tr>{daysOfTheWeek.map(day => <td>{day}</td>)}</tr>
                 </thead>
