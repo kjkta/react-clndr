@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "prettier": "prettier '{*,src/**,demo/**}*.js' --write",
+    "prettier": "prettier 'src/*.js' --write",
     "dev": "NODE_ENV=development webpack --watch"
   },
   "devDependencies": {
