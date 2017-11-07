@@ -17,12 +17,12 @@ type State = {
 };
 
 const styles = {
-  day: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: 50,
-    height: 50
+  arrow: {
+    width: 20,
+    height: 20,
+    padding: 5,
+    border: "1px solid #eee",
+    borderRadius: 3
   }
 };
 
