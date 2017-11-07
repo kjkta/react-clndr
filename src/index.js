@@ -16,19 +16,24 @@ type State = {
   shownMonth: Moment
 };
 
+const cellSize = 38;
+const green = "#00a699";
+const grey = "#6b6b6b";
+
 const styles = {
   arrow: {
     width: 20,
     height: 20,
     padding: 5,
-    border: "1px solid #eee",
-    borderRadius: 3,
-    transition: "100ms all"
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: grey,
+    borderRadius: 3
   },
   tableCell: {
     textAlign: "center",
     userSelect: "none",
-    width: 45
+    width: cellSize
   }
 };
 
@@ -82,7 +87,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
           dangerouslySetInnerHTML={{
             __html: `
             .arrow:active {
-                box-shadow: inset 2px 2px 1px rgba(0, 166, 153, .4)
+                outline: auto 5px ${green};
+                outline-offset: -2px;
               }
         `
           }}
@@ -101,7 +107,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
             textAlign: "center",
             ...(this.state.showCal
               ? {
-                  borderColor: "#00a699"
+                  borderColor: green
                 }
               : {})
           }}
@@ -115,7 +121,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
           <div
             style={{
               width: "100%",
-              maxWidth: 360,
+              maxWidth: 315,
               backgroundColor: "white",
               borderRadius: 3,
               margin: "10px 0",
@@ -184,7 +190,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 </thead>
                 <tbody>
                   {datesInMonthByWeek.map(weekDays => (
-                    <tr style={{ height: 45 }}>
+                    <tr style={{ height: cellSize }}>
                       {weekDays.map(
                         day =>
                           // Render days in week for each week
@@ -199,8 +205,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
                                 cursor: "pointer",
                                 ...(day.date.isSame(this.state.value, "day")
                                   ? {
-                                      borderColor: "#00a699",
-                                      backgroundColor: "#00a699",
+                                      borderColor: green,
+                                      backgroundColor: green,
                                       color: "white"
                                     }
                                   : {})
