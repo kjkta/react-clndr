@@ -12,7 +12,7 @@ type Props = {
 
 type State = {
   value: Moment,
-  showModal: boolean,
+  showCal: boolean,
   shownMonth: Moment
 };
 
@@ -22,7 +22,8 @@ const styles = {
     height: 20,
     padding: 5,
     border: "1px solid #eee",
-    borderRadius: 3
+    borderRadius: 3,
+    transition: "100ms all"
   }
 };
 
@@ -36,7 +37,6 @@ const getDatesInMonth = (date: Moment) => {
     const dayWeekIndex = date.day();
     weekIndex = dayWeekIndex === 0 && i != 0 ? weekIndex + 1 : weekIndex;
     return {
-      index: 0,
       dayWeekIndex,
       weekIndex,
       date
@@ -63,7 +63,7 @@ const getDaysInWeek = days => {
 export default class DateTimePicker extends React.Component<Props, State> {
   state = {
     value: this.props.initialValue || moment(),
-    showModal: true,
+    showCal: true,
     shownMonth: this.props.initialValue || moment()
   };
 
@@ -73,26 +73,46 @@ export default class DateTimePicker extends React.Component<Props, State> {
     );
     return (
       <div>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+            .arrow:active {
+                box-shadow: inset 2px 2px 1px #eee
+              }
+        `
+          }}
+        />
         <input
           style={{
             ...this.props.inputStyle,
+            width: "100%",
+            maxWidth: 135,
             userSelect: "none",
             padding: 10,
-            fontSize: 16
+            fontSize: 16,
+            borderStyle: "solid",
+            borderWidth: 1,
+            borderRadius: 3,
+            textAlign: "center",
+            ...(this.state.showCal
+              ? {
+                  borderColor: "green"
+                }
+              : {})
           }}
           readOnly
-          onClick={() => this.setState({ showModal: !this.state.showModal })}
+          onClick={() => this.setState({ showCal: !this.state.showCal })}
           value={this.state.value.format(
             this.props.dateFormat ? this.props.dateFormat : "DD/MM/YY HH:mm"
           )}
         />
-        {this.state.showModal && (
+        {this.state.showCal && (
           <div
             style={{
               width: "100%",
               maxWidth: 360,
               backgroundColor: "white",
-              borderRadius: 5,
+              borderRadius: 3,
               margin: "10px 0",
               border: "1px solid #eee"
             }}
@@ -111,9 +131,10 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   justifyContent: "space-between",
                   alignContent: "center",
                   width: "100%"
-              }}
-            >
+                }}
+              >
                 <div
+                  className="arrow"
                   style={styles.arrow}
                   onClick={() =>
                     this.setState({
@@ -123,10 +144,11 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   {svgs.leftArrow}
                 </div>
 
-                <span style={{ padding: "10 ", fontWeight: "bold" }}>
+                <span style={{ padding: 10, fontWeight: "bold" }}>
                   {this.state.shownMonth.format("MMMM YYYY")}
-              </span>
+                </span>
                 <div
+                  className="arrow"
                   style={styles.arrow}
                   onClick={() =>
                     this.setState({
@@ -136,9 +158,22 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   {svgs.rightArrow}
                 </div>
               </div>
-              <table style={{ width: "100%", flex: 1}}>
+              <table style={{ width: "100%", flex: 1 }}>
                 <thead>
-                  <tr>{daysOfTheWeek.map(day => <td>{day}</td>)}</tr>
+                  <tr>
+                    {daysOfTheWeek.map(day => (
+                      <td
+                        style={{
+                          textAlign: "center",
+                          padding: 10,
+                          userSelect: "none",
+                          cursor: "default"
+                        }}
+                      >
+                        {day}
+                      </td>
+                    ))}
+                  </tr>
                 </thead>
                 <tbody>
                   {datesInMonthByWeek.map(weekDays => (
@@ -146,12 +181,15 @@ export default class DateTimePicker extends React.Component<Props, State> {
                       {weekDays.map(
                         day =>
                           // Render days in week for each week
-
                           day.date ? (
                             <td
+                              key={day.date.date()}
                               style={{
                                 textAlign: "center",
                                 cursor: "pointer",
+                                userSelect: "none",
+                                borderRadius: 3,
+                                padding: 10,
                                 ...(day.date.isSame(this.state.value, "day")
                                   ? {
                                       backgroundColor: "yellow"
