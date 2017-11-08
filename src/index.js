@@ -1,6 +1,4 @@
 // @flow
-import React from "react";
-import moment from "moment";
 import type Moment from "moment";
 import * as svgs from "./svgs";
 
@@ -138,7 +136,6 @@ export default class DateTimePicker extends React.Component<Props, State> {
 
   render() {
     const datesInMonthByWeek = getDatesByWeekNo(this.state.shownMonth);
-    console.log(this.state);
     return (
       <div>
         <style
