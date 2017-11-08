@@ -4,22 +4,6 @@ import moment from "moment";
 import type Moment from "moment";
 import * as svgs from "./svgs";
 
-type Props = {
-  initialValue?: Moment,
-  dateFormat?: string,
-  inputStyle?: { [string]: any },
-  min?: Moment,
-  max?: Moment,
-  onChange?: (value: Moment) => any
-};
-
-type State = {
-  value: Moment,
-  showCal: boolean,
-  shownMonth: Moment,
-  showMinSelect: boolean
-};
-
 const cellSize = 38;
 const green = "#00a699";
 const grey = "#6b6b6b";
@@ -79,20 +63,34 @@ const getDatesInMonth = (date: Moment) => {
   });
 };
 
-const getMonthWeeks = days => {
-  return [
-    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === 0)),
-    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === 1)),
-    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === 2)),
-    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === 3))
-  ];
-};
-
-const getDaysInWeek = days => {
-  return daysOfTheWeek.map((name, i) => {
+const getDaysInWeek = days =>
+  daysOfTheWeek.map((name, i) => {
     const dayInMonth = days.find(({ dayWeekIndex }) => dayWeekIndex === i);
     return dayInMonth ? dayInMonth : {};
   });
+
+const sortDatesByWeeksNo = days =>
+  [0, 1, 2, 3].map(weekNo =>
+    getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === weekNo))
+  );
+
+const getDatesByWeekNo = (date: Moment) =>
+  sortDatesByWeeksNo(getDatesInMonth(date));
+
+type Props = {
+  initialValue?: Moment,
+  dateFormat?: string,
+  inputStyle?: { [string]: any },
+  min?: Moment,
+  max?: Moment,
+  onChange?: (value: Moment) => any
+};
+
+type State = {
+  value: Moment,
+  showCal: boolean,
+  shownMonth: Moment,
+  showMinSelect: boolean
 };
 
 export default class DateTimePicker extends React.Component<Props, State> {
@@ -139,9 +137,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
   }
 
   render() {
-    const datesInMonthByWeek = getMonthWeeks(
-      getDatesInMonth(this.state.shownMonth)
-    );
+    const datesInMonthByWeek = getDatesByWeekNo(this.state.shownMonth);
     console.log(this.state);
     return (
       <div>
