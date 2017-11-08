@@ -1,4 +1,15 @@
 {
+  "name": "date-time-picker-react",
+  "version": "0",
+  "description": "A date time picker for react.",
+  "main": "DateTimePicker.js",
+  "repository": {
+    "url": "https://github.com/kjkta/date-time-picker-react",
+    "type": "git"
+  },
+  "author": "Kyle Thomson <kjay.thomson@gmail.com>",
+  "license": "MIT",
+  "keywords": ["react", "date", "time", "picker"],
   "scripts": {
     "prettier": "prettier 'src/*.js' --write",
     "dev": "NODE_ENV=development webpack --watch",
