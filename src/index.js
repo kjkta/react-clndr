@@ -7,7 +7,8 @@ import * as svgs from "./svgs";
 type Props = {
   initialValue?: Moment,
   dateFormat: string,
-  inputStyle: { [string]: any }
+  inputStyle: { [string]: any },
+  onChange: (value: Moment) => any
 };
 
 type State = {
@@ -89,12 +90,20 @@ const getDaysInWeek = days => {
 };
 
 export default class DateTimePicker extends React.Component<Props, State> {
-  state = {
-    value: this.props.initialValue || moment(),
-    showCal: false,
-    shownMonth: this.props.initialValue || moment(),
-    showMinSelect: false
-  };
+  constructor(props: Props) {
+    super(props);
+    const definedInitialValue = props.initialValue || moment();
+    const roundedInitialValue = definedInitialValue.set(
+      "minutes",
+      Math.round(definedInitialValue.get("minutes") / 15) * 15
+    );
+    this.state = {
+      value: roundedInitialValue.clone(),
+      showCal: false,
+      shownMonth: roundedInitialValue.clone(),
+      showMinSelect: false
+    };
+  }
   cal = {};
 
   componentDidUpdate() {
@@ -102,21 +111,25 @@ export default class DateTimePicker extends React.Component<Props, State> {
   }
 
   handleDateSelect(date: Moment) {
-    this.setState({
-      value: this.state.value.set({
-        year: date.get("year"),
-        month: date.get("month"),
-        date: date.get("date")
-      })
+    const value = this.state.value.set({
+      year: date.get("year"),
+      month: date.get("month"),
+      date: date.get("date")
     });
+    this.setState({ value });
+    this.props.onChange(value);
   }
 
   handleHourSelect(hr: number) {
-    this.setState({ value: this.state.value.hour(hr), showMinSelect: true });
+    const value = this.state.value.hour(hr);
+    this.setState({ value, showMinSelect: true });
+    this.props.onChange(value);
   }
 
   handleMinSelect(min: number) {
-    this.setState({ value: this.state.value.minute(min), showCal: false });
+    const value = this.state.value.minute(min);
+    this.setState({ value, showCal: false });
+    this.props.onChange(value);
   }
 
   render() {
