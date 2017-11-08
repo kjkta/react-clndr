@@ -1,18 +1,40 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        font-family: "Open Sans"
+      }
+    </style>
   </head>
   <body>
     <div id="demo"></div>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> 
-    <script src="https://unpkg.com/react@16.0.0/umd/react.development.js"></script> 
-    <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.development.js"></script> 
+    <script crossorigin src="https://unpkg.com/react@16.0.0/umd/react.development.js"></script> 
+    <script crossorigin src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.development.js"></script> 
+    <script src="https://unpkg.com/moment@2.19.1/moment.js"></script> 
     <script src="../DateTimePicker.js"></script>
     <script type="text/babel" data-presets="react,stage-0">
-      const Demo = () => (
-        <DateTimePicker.default />
-      )
-      ReactDOM.render(<Demo />, document.getElementById("demo"))
+      class Demo extends React.Component {
+        state = {
+          history: []
+        };
+        render() {
+          return (
+            <div>
+              <DateTimePicker.default
+                onChange={value => {
+                  this.setState({ history: [...this.state.history, value.clone()] })}
+                }
+              />
+              <h4>History</h4>
+              <div>{this.state.history.map(moment => <div>{moment.format("dddd, MMMM Do YYYY, HH:mm")}</div>)}</div>
+            </div>
+          );
+        }
+      }
+      ReactDOM.render(<Demo />, document.getElementById("demo"));
     </script>
   </body>
 </html>
