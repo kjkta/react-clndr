@@ -29,7 +29,8 @@ const styles = {
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: grey,
-    borderRadius: 3
+    borderRadius: 3,
+    cursor: "pointer"
   },
   calCell: {
     textAlign: "center",
@@ -90,10 +91,15 @@ const getDaysInWeek = days => {
 export default class DateTimePicker extends React.Component<Props, State> {
   state = {
     value: this.props.initialValue || moment(),
-    showCal: true,
+    showCal: false,
     shownMonth: this.props.initialValue || moment(),
     showMinSelect: false
   };
+  cal = {};
+
+  componentDidUpdate() {
+    this.state.showCal && this.cal.focus();
+  }
 
   handleDateSelect(date: Moment) {
     this.setState({
@@ -110,19 +116,20 @@ export default class DateTimePicker extends React.Component<Props, State> {
   }
 
   handleMinSelect(min: number) {
-    this.setState({ value: this.state.value.minute(min) });
+    this.setState({ value: this.state.value.minute(min), showCal: false });
   }
 
   render() {
     const datesInMonthByWeek = getMonthWeeks(
       getDatesInMonth(this.state.shownMonth)
     );
+    console.log(this.state);
     return (
       <div>
         <style
           dangerouslySetInnerHTML={{
             __html: `
-            .arrow:active {
+            .date-time-picker-arrow:active {
                 outline: auto 5px ${green};
                 outline-offset: -2px;
               }
@@ -130,6 +137,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
           }}
         />
         <input
+          readOnly
           style={{
             ...this.props.inputStyle,
             width: "100%",
@@ -143,26 +151,33 @@ export default class DateTimePicker extends React.Component<Props, State> {
             textAlign: "center",
             ...(this.state.showCal
               ? {
-                  borderColor: green
+                  borderColor: green,
+                  outline: "auto 5px " + green,
+                  outlineOffset: -2
                 }
               : {})
           }}
-          readOnly
-          onClick={() => this.setState({ showCal: !this.state.showCal })}
+          onFocus={() => {
+            this.setState({ showCal: !this.state.showCal });
+          }}
           value={this.state.value.format(
             this.props.dateFormat ? this.props.dateFormat : "DD/MM/YY HH:mm"
           )}
         />
         {this.state.showCal && (
           <div
+            ref={ref => (this.cal = ref)}
             style={{
               width: "100%",
               maxWidth: 315,
               backgroundColor: "white",
               borderRadius: 3,
               margin: "10px 0",
-              border: "1px solid #eee"
+              border: "1px solid #eee",
+              outline: 0
             }}
+            tabIndex="-1"
+            onBlur={() => this.setState({ showCal: false })}
           >
             <div
               style={{
@@ -181,7 +196,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 }}
               >
                 <div
-                  className="arrow"
+                  className="date-time-picker-arrow"
                   style={{ ...styles.arrow, transform: "rotate(180deg)" }}
                   onClick={() =>
                     this.setState({
@@ -191,7 +206,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   {svgs.arrow}
                 </div>
 
-                <span style={{ fontWeight: "bold" }}>
+                <span style={{ fontWeight: "bold", userSelect: "none" }}>
                   {this.state.shownMonth.format("MMMM YYYY")}
                 </span>
                 <div
@@ -285,7 +300,9 @@ export default class DateTimePicker extends React.Component<Props, State> {
                     <div style={{ padding: "0 10", fontWeight: "bold" }}>:</div>
                   </div>
                 ) : (
-                  <div style={{ marginRight: 10 }}>Hour</div>
+                  <div style={{ marginRight: 10, userSelect: "none" }}>
+                    Hour:
+                  </div>
                 )}
                 <div
                   style={{
