@@ -269,8 +269,12 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   {datesInMonthByWeek.map(weekDays => (
                     <tr style={{ height: cellSize }}>
                       {weekDays.map(day => {
-                        const min = this.props.min && this.props.min.startOf("day") > day.date;
-                        const max = this.props.max && this.props.max.endOf("day") < day.date;
+                        const min =
+                          this.props.min &&
+                          this.props.min.startOf("day") > day.date;
+                        const max =
+                          this.props.max &&
+                          this.props.max.endOf("day") < day.date;
                         // Render days in week for each week
                         return day.date ? (
                           <td
