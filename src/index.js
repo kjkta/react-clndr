@@ -123,19 +123,19 @@ export default class DateTimePicker extends React.Component<Props, State> {
       date: date.get("date")
     });
     this.setState({ value });
-    this.props.onChange(value);
+    this.props.onChange && this.props.onChange(value);
   }
 
   handleHourSelect(hr: number) {
     const value = this.state.value.hour(hr);
     this.setState({ value, showMinSelect: true });
-    this.props.onChange(value);
+    this.props.onChange && this.props.onChange(value);
   }
 
   handleMinSelect(min: number) {
     const value = this.state.value.minute(min);
     this.setState({ value, showCal: false });
-    this.props.onChange(value);
+    this.props.onChange && this.props.onChange(value);
   }
 
   render() {
