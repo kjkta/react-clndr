@@ -13,7 +13,8 @@ type Props = {
 type State = {
   value: Moment,
   showCal: boolean,
-  shownMonth: Moment
+  shownMonth: Moment,
+  showMinSelect: boolean
 };
 
 const cellSize = 38;
@@ -94,6 +95,16 @@ export default class DateTimePicker extends React.Component<Props, State> {
     showMinSelect: false
   };
 
+  handleDateSelect(date: Moment) {
+    this.setState({
+      value: this.state.value.set({
+        year: date.get("year"),
+        month: date.get("month"),
+        date: date.get("date")
+      })
+    });
+  }
+
   handleHourSelect(hr: number) {
     this.setState({ value: this.state.value.hour(hr), showMinSelect: true });
   }
@@ -122,7 +133,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
           style={{
             ...this.props.inputStyle,
             width: "100%",
-            maxWidth: 135,
+            maxWidth: 150,
             userSelect: "none",
             padding: 10,
             fontSize: 16,
@@ -195,7 +206,11 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 </div>
               </div>
               <table
-                style={{ tableLayout: "fixed", borderCollapse: "collapse", margin: "15 0", }}
+                style={{
+                  tableLayout: "fixed",
+                  borderCollapse: "collapse",
+                  margin: "15 0"
+                }}
               >
                 <thead>
                   <tr>
@@ -232,7 +247,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                                   ? styles.selected
                                   : {})
                               }}
-                              onClick={() => this.setState({ value: day.date })}
+                              onClick={() => this.handleDateSelect(day.date)}
                             >
                               {day.date.date()}
                             </td>
@@ -255,21 +270,19 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 }}
               >
                 {this.state.showMinSelect ? (
-                  <div style={{ display: "flex", alignItems: "center"}}>
-                  <div
-                    style={{
-                      ...styles.timeCell,
-                      fontWeight: "bold",
-                      color: green,
-                      borderColor: green,
-                    }}
-                    onClick={() => this.setState({ showMinSelect: false })}
-                  >
-                    {this.state.value.hour()}
-                  </div>
-                  <div style={{ padding: "0 10", fontWeight: "bold"}}>
-                    :
-                  </div>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <div
+                      style={{
+                        ...styles.timeCell,
+                        fontWeight: "bold",
+                        color: green,
+                        borderColor: green
+                      }}
+                      onClick={() => this.setState({ showMinSelect: false })}
+                    >
+                      {this.state.value.hour()}
+                    </div>
+                    <div style={{ padding: "0 10", fontWeight: "bold" }}>:</div>
                   </div>
                 ) : (
                   <div style={{ marginRight: 10 }}>Hour</div>
@@ -302,21 +315,19 @@ export default class DateTimePicker extends React.Component<Props, State> {
                           </div>
                         );
                       })
-                    : [...Array(24).keys()]
-                        .map(index => index + 1)
-                        .map(hour => (
-                          <div
-                            style={{
-                              ...styles.timeCell,
-                              ...(hour === this.state.value.hour()
-                                ? styles.selected
-                                : {})
-                            }}
-                            onClick={() => this.handleHourSelect(hour)}
-                          >
-                            {hour}
-                          </div>
-                        ))}
+                    : [...Array(24).keys()].reverse().map(hour => (
+                        <div
+                          style={{
+                            ...styles.timeCell,
+                            ...(hour === this.state.value.hour()
+                              ? styles.selected
+                              : {})
+                          }}
+                          onClick={() => this.handleHourSelect(hour)}
+                        >
+                          {hour}
+                        </div>
+                      ))}
                 </div>
               </div>
             </div>
