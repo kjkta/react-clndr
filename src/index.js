@@ -6,9 +6,11 @@ import * as svgs from "./svgs";
 
 type Props = {
   initialValue?: Moment,
-  dateFormat: string,
-  inputStyle: { [string]: any },
-  onChange: (value: Moment) => any
+  dateFormat?: string,
+  inputStyle?: { [string]: any },
+  min?: Moment,
+  max?: Moment,
+  onChange?: (value: Moment) => any
 };
 
 type State = {
@@ -21,6 +23,7 @@ type State = {
 const cellSize = 38;
 const green = "#00a699";
 const grey = "#6b6b6b";
+const lightGrey = "#e4e7e7";
 
 const styles = {
   arrow: {
@@ -53,6 +56,9 @@ const styles = {
     borderColor: green,
     backgroundColor: green,
     color: "white"
+  },
+  disabledCell: {
+    color: lightGrey
   }
 };
 
@@ -146,6 +152,9 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 outline: auto 5px ${green};
                 outline-offset: -2px;
               }
+            .valid-cell:hover {
+              background-color: ${lightGrey}
+            }
         `
           }}
         />
@@ -237,7 +246,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 style={{
                   tableLayout: "fixed",
                   borderCollapse: "collapse",
-                  margin: "15 0"
+                  margin: "15px 0"
                 }}
               >
                 <thead>
@@ -259,30 +268,34 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 <tbody>
                   {datesInMonthByWeek.map(weekDays => (
                     <tr style={{ height: cellSize }}>
-                      {weekDays.map(
-                        day =>
-                          // Render days in week for each week
-                          day.date ? (
-                            <td
-                              key={day.date.date()}
-                              style={{
-                                ...styles.calCell,
-                                borderWidth: 1,
-                                borderStyle: "solid",
-                                borderColor: "#ccc",
-                                cursor: "pointer",
-                                ...(day.date.isSame(this.state.value, "day")
-                                  ? styles.selected
-                                  : {})
-                              }}
-                              onClick={() => this.handleDateSelect(day.date)}
-                            >
-                              {day.date.date()}
-                            </td>
-                          ) : (
-                            <td />
-                          )
-                      )}
+                      {weekDays.map(day => {
+                        const min = this.props.min && this.props.min.startOf("day") > day.date;
+                        const max = this.props.max && this.props.max.endOf("day") < day.date;
+                        // Render days in week for each week
+                        return day.date ? (
+                          <td
+                            key={day.date.date()}
+                            className={min || max ? "" : "valid-cell"}
+                            style={{
+                              ...styles.calCell,
+                              borderWidth: 1,
+                              borderStyle: "solid",
+                              borderColor: "#ccc",
+                              cursor: "pointer",
+                              ...(day.date.isSame(this.state.value, "day")
+                                ? styles.selected
+                                : {}),
+                              ...(min || max ? styles.disabledCell : {})
+                            }}
+                            onClick={() =>
+                              !(min || max) && this.handleDateSelect(day.date)}
+                          >
+                            {day.date.date()}
+                          </td>
+                        ) : (
+                          <td />
+                        );
+                      })}
                     </tr>
                   ))}
                 </tbody>
@@ -330,23 +343,23 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   }}
                 >
                   {this.state.showMinSelect
-                    ? ["00", "15", "30", "45"].map(min => {
-                        return (
-                          <div
-                            style={{
-                              ...styles.timeCell,
-                              ...(Number(min) === this.state.value.minute()
-                                ? styles.selected
-                                : {})
-                            }}
-                            onClick={() => this.handleMinSelect(Number(min))}
-                          >
-                            {min}
-                          </div>
-                        );
-                      })
+                    ? ["00", "15", "30", "45"].map(min => (
+                        <div
+                          className="valid-cell"
+                          style={{
+                            ...styles.timeCell,
+                            ...(Number(min) === this.state.value.minute()
+                              ? styles.selected
+                              : {})
+                          }}
+                          onClick={() => this.handleMinSelect(Number(min))}
+                        >
+                          {min}
+                        </div>
+                      ))
                     : [...Array(24).keys()].reverse().map(hour => (
                         <div
+                          className="valid-cell"
                           style={{
                             ...styles.timeCell,
                             ...(hour === this.state.value.hour()

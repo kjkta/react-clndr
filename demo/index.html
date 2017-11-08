@@ -24,6 +24,8 @@
           return (
             <div>
               <DateTimePicker.default
+                min={moment()}
+                max={moment().add(10, "days")}
                 onChange={value => {
                   this.setState({ history: [...this.state.history, value.clone()] })}
                 }
