@@ -17,9 +17,10 @@
   ],
   "prepublish": "npm run build",
   "scripts": {
-    "prettier": "prettier 'src/*.js' --write",
+    "prettier": "prettier --write '{webpack.*,{src,demo}/**/*.}js'",
     "dev": "NODE_ENV=development webpack --watch",
-    "build": "NODE_ENV=production webpack -p"
+    "build": "NODE_ENV=production webpack -p",
+    "precommit": "./node_modules/lint-staged/index.js"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -32,11 +33,19 @@
     "date-time-picker-react": "^0.0.3",
     "eslint-plugin-react": "^7.4.0",
     "flow-bin": "^0.58.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.3.0",
     "prettier": "^1.7.4",
     "webpack": "^3.8.1"
   },
   "peerDependencies": {
     "moment": "^2.19.1",
     "react": "^16.0.0"
+  },
+  "lint-staged": {
+    "{webpack.*,{src,demo}/**/*.}js": [
+      "./node_modules/prettier/bin/prettier.js --write",
+      "git add"
+    ]
   }
 }
