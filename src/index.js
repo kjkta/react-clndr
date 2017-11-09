@@ -1,4 +1,6 @@
 // @flow
+import * as React from "react";
+import moment from "moment";
 import type Moment from "moment";
 import * as svgs from "./svgs";
 
@@ -109,7 +111,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
   cal = {};
 
   componentDidUpdate() {
-    this.state.showCal && this.cal.focus();
+    this.state.showCal && this.cal && this.cal.focus();
   }
 
   handleDateSelect(date: Moment) {
@@ -264,10 +266,10 @@ export default class DateTimePicker extends React.Component<Props, State> {
                       {weekDays.map(day => {
                         const min =
                           this.props.min &&
-                          this.props.min.startOf("day") > day.date;
+                          this.props.min.startOf("day").isAfter(day.date);
                         const max =
                           this.props.max &&
-                          this.props.max.endOf("day") < day.date;
+                          this.props.max.endOf("day").isBefore(day.date);
                         // Render days in week for each week
                         return day.date ? (
                           <td
