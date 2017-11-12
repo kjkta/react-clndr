@@ -32,7 +32,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "date-time-picker-react": "^0.0.3",
+    "date-time-picker-react": "^0.0.7",
     "eslint": "^4.11.0",
     "eslint-plugin-react": "^7.4.0",
     "flow-bin": "^0.58.0",
