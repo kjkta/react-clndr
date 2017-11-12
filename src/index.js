@@ -40,11 +40,6 @@ const styles = {
     display: "flex",
     alignItems: "center"
   },
-  selected: {
-    borderColor: green,
-    backgroundColor: green,
-    color: "white"
-  },
   disabledCell: {
     color: lightGrey
   }
@@ -85,6 +80,7 @@ type Props = {
   initialValue?: Moment,
   dateFormat?: string,
   inputStyle?: { [string]: any },
+  highlightColor: string,
   min?: Moment,
   max?: Moment,
   onChange?: (value: Moment) => any
@@ -98,6 +94,9 @@ type State = {
 };
 
 export default class DateTimePicker extends React.Component<Props, State> {
+  static defaultProps = {
+    highlightColor: green
+  };
   constructor(props: Props) {
     super(props);
     const definedInitialValue = props.initialValue || moment();
@@ -116,6 +115,14 @@ export default class DateTimePicker extends React.Component<Props, State> {
 
   componentDidUpdate() {
     this.state.showCal && this.cal && this.cal.focus();
+  }
+
+  getSelectedStyle() {
+    return {
+      borderColor: this.props.highlightColor,
+      backgroundColor: this.props.highlightColor,
+      color: "white"
+    };
   }
 
   handleDateSelect(date: Moment) {
@@ -148,7 +155,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
           dangerouslySetInnerHTML={{
             __html: `
             .date-time-picker-arrow:active {
-                outline: auto 5px ${green};
+                outline: auto 5px ${this.props.highlightColor};
                 outline-offset: -2px;
               }
             .valid-cell:hover {
@@ -172,8 +179,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
             textAlign: "center",
             ...(this.state.showCal
               ? {
-                  borderColor: green,
-                  outline: "auto 5px " + green,
+                  borderColor: this.props.highlightColor,
+                  outline: "auto 5px " + this.props.highlightColor,
                   outlineOffset: -2
                 }
               : {})
@@ -287,7 +294,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                               borderColor: "#ccc",
                               cursor: "pointer",
                               ...(day.date.isSame(this.state.value, "day")
-                                ? styles.selected
+                                ? this.getSelectedStyle()
                                 : {}),
                               ...(min || max ? styles.disabledCell : {})
                             }}
@@ -320,8 +327,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
                       style={{
                         ...styles.timeCell,
                         fontWeight: "bold",
-                        color: green,
-                        borderColor: green
+                        color: this.props.highlightColor,
+                        borderColor: this.props.highlightColor
                       }}
                       onClick={() => this.setState({ showMinSelect: false })}
                     >
@@ -343,7 +350,6 @@ export default class DateTimePicker extends React.Component<Props, State> {
                     overflowX: "scroll",
                     paddingTop: 10,
                     paddingBottom: 10
-                    // boxShadow: "inset -10px 0px 5px 1px #aaaaaa"
                   }}
                 >
                   {this.state.showMinSelect
@@ -353,7 +359,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                           style={{
                             ...styles.timeCell,
                             ...(Number(min) === this.state.value.minute()
-                              ? styles.selected
+                              ? this.getSelectedStyle()
                               : {})
                           }}
                           onClick={() => this.handleMinSelect(Number(min))}
@@ -367,7 +373,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                           style={{
                             ...styles.timeCell,
                             ...(hour === this.state.value.hour()
-                              ? styles.selected
+                              ? this.getSelectedStyle()
                               : {})
                           }}
                           onClick={() => this.handleHourSelect(hour)}
