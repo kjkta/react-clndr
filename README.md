@@ -32,13 +32,13 @@ class Demo extends React.Component {
 
 Name | Type | Default | Description
 ---|---|---|---
-initialValue | `Moment` | No | An initial date/time. Default is now.
-dateFormat | `string` | No | A `Moment` format. Default is "DD/MM/YY HH:mm".
-inputStyle | `{ [string]: any }` | No | Additional styles for the input element.
-highlightColor | `string` | No | The selected/focussed highlight color.
-min | `Moment` | No | The earliest selectable date.
-max | `Moment` | No | The lastest selectable date.
-onChange | `(value: Moment) => any` | No | Dispatches selected date/time on every date/time change.
+initialValue | `Moment` | `moment()` | An initial date/time. Default is now.
+dateFormat | `string` | `"DD/MM/YY HH:mm"` | A `Moment` format. Default is "DD/MM/YY HH:mm".
+inputStyle | `{ [string]: any }` | `null` | Additional styles for the input element.
+highlightColor | `string` | `"#00a699"` | The selected/focussed highlight color.
+min | `Moment` | `null` | The earliest selectable date.
+max | `Moment` | `null` | The lastest selectable date.
+onChange | `(value: Moment) => any` | null | Dispatches selected date/time on every date/time change.
 
 ### Contributing
 
