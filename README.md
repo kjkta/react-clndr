@@ -1,14 +1,27 @@
-# A Date & Time picker for React
-
-[![NPM](https://nodei.co/npm/date-time-picker-react.png)](https://nodei.co/npm/date-time-picker-react/)
+## A Date & Time picker for React
 
 View the demo [here](https://kjkta.github.io/date-time-picker-react/).
 
-## Install
+[![NPM](https://nodei.co/npm/date-time-picker-react.png)](https://nodei.co/npm/date-time-picker-react/)
+
+### Install
 
 `yarn add date-time-picker-react -D`
 
-## Usage
+### Usage
+
+```js
+import DateTimePicker from "date-time-picker-react";
+
+class Demo extends React.Component {
+  ...
+  <DateTimePicker onChange={value => {
+    // do something...
+  }}>
+  ...
+}
+
+```
 
 Name | Type | Required | Description
 ---|---|---|---
