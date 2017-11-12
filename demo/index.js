@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
-import DateTimePicker from "../DateTimePicker.js";
+import DateTimePicker from "date-time-picker-react";
 
 class Demo extends React.Component {
   state = {
