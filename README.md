@@ -46,3 +46,4 @@ onChange | `(value: Moment) => any` | No | Dispatches selected date/time on ever
 - Run webpack with `yarn dev`
 - Build with `yarn build`
 - Type check with `yarn flow`
+- Lint with `yarn lint`
