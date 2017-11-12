@@ -10,6 +10,8 @@ View the demo [here](https://kjkta.github.io/date-time-picker-react/).
 
 ### Usage
 
+React and Moment are peer dependencies for `date-time-picker-react`. These dependencies are not installed with date-time-picker-react, so your project needs to have them installed for the datepicker to work. You can then use it like so:
+
 ```js
 import DateTimePicker from "date-time-picker-react";
 
