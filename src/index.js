@@ -204,7 +204,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
               outline: 0
             }}
             tabIndex="-1"
-            /* onBlur={() => this.setState({ showCal: false })} */
+            onBlur={() => this.setState({ showCal: false })}
           >
             <div
               style={{
@@ -228,7 +228,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   onClick={() =>
                     this.setState({
                       shownMonth: this.state.shownMonth.subtract(1, "month")
-                    })}
+                    })
+                  }
                 >
                   {arrow}
                 </div>
@@ -242,7 +243,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   onClick={() =>
                     this.setState({
                       shownMonth: this.state.shownMonth.add(1, "month")
-                    })}
+                    })
+                  }
                 >
                   {arrow}
                 </div>
@@ -298,7 +300,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
                               ...(min || max ? styles.disabledCell : {})
                             }}
                             onClick={() =>
-                              !(min || max) && this.handleDateSelect(day.date)}
+                              !(min || max) && this.handleDateSelect(day.date)
+                            }
                           >
                             {day.date.date()}
                           </td>
@@ -370,7 +373,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
                                     : {})
                                 }}
                                 onClick={() =>
-                                  this.handleMinSelect(Number(min))}
+                                  this.handleMinSelect(Number(min))
+                                }
                               >
                                 <div style={{ width: cellSize }}>{min}</div>
                               </td>
