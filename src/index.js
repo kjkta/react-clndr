@@ -2,12 +2,16 @@
 import * as React from "react";
 import moment from "moment";
 import type Moment from "moment";
-import * as svgs from "./svgs";
 
 const cellSize = 38;
 const green = "#00a699";
 const grey = "#6b6b6b";
 const lightGrey = "#e4e7e7";
+const arrow = (
+  <svg viewBox="0 0 1000 1000">
+    <path d="M694.4 242.4l249.1 249.1c11 11 11 21 0 32L694.4 772.7c-5 5-10 7-16 7s-11-2-16-7c-11-11-11-21 0-32l210.1-210.1H67.1c-13 0-23-10-23-23s10-23 23-23h805.4L662.4 274.5c-21-21.1 11-53.1 32-32.1z" />
+  </svg>
+);
 
 const styles = {
   arrow: {
@@ -220,7 +224,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                       shownMonth: this.state.shownMonth.subtract(1, "month")
                     })}
                 >
-                  {svgs.arrow}
+                  {arrow}
                 </div>
 
                 <span style={{ fontWeight: "bold", userSelect: "none" }}>
@@ -234,7 +238,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                       shownMonth: this.state.shownMonth.add(1, "month")
                     })}
                 >
-                  {svgs.arrow}
+                  {arrow}
                 </div>
               </div>
               <table
