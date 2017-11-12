@@ -17,9 +17,13 @@ import DateTimePicker from "date-time-picker-react";
 
 class Demo extends React.Component {
   ...
-  <DateTimePicker onChange={value => {
-    // do something...
-  }}>
+  render() {
+    return (
+      <DateTimePicker onChange={value => {
+        // do something...
+      }}>
+    );
+  }
   ...
 }
 ```
