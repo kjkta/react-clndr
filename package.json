@@ -17,11 +17,11 @@
   ],
   "prepublish": "npm run build",
   "scripts": {
-    "prettier": "prettier --write '{webpack.*,{src,demo}/**/*.}js'",
+    "prettier": "prettier --write '{webpack,demo/index,src/index}.js",
     "dev": "NODE_ENV=development webpack --watch",
     "build": "NODE_ENV=production webpack -p",
     "precommit": "./node_modules/lint-staged/index.js",
-    "lint": "eslint '{webpack.*,demo/index,{src}/**/*.}js'"
+    "lint": "eslint '{webpack,demo/index,src/index}.js'"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -50,7 +50,7 @@
     "react": "^15.0.0"
   },
   "lint-staged": {
-    "{webpack.*,{src,demo}/**/*.}js": [
+    "{webpack,demo/index,src/index}.js": [
       "./node_modules/prettier/bin/prettier.js --write",
       "git add"
     ]
