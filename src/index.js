@@ -272,9 +272,9 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   </tr>
                 </thead>
                 <tbody>
-                  {datesInMonthByWeek.map(weekDays => (
-                    <tr style={{ height: cellSize }}>
-                      {weekDays.map(day => {
+                  {datesInMonthByWeek.map((weekDays, i) => (
+                    <tr key={i} style={{ height: cellSize }}>
+                      {weekDays.map((day, i) => {
                         const min =
                           this.props.min &&
                           this.props.min.startOf("day").isAfter(day.date);
@@ -284,7 +284,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                         // Render days in week for each week
                         return day.date ? (
                           <td
-                            key={day.date.date()}
+                            key={i}
                             className={min || max ? "" : "valid-cell"}
                             style={{
                               ...styles.calCell,
@@ -303,7 +303,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                             {day.date.date()}
                           </td>
                         ) : (
-                          <td />
+                          <td key={i} />
                         );
                       })}
                     </tr>
@@ -361,6 +361,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                         {this.state.showMinSelect
                           ? ["00", "15", "30", "45"].map(min => (
                               <td
+                                key={min}
                                 className="valid-cell"
                                 style={{
                                   ...styles.timeCell,
@@ -376,6 +377,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                             ))
                           : [...Array(24).keys()].reverse().map(hour => (
                               <td
+                                key={hour}
                                 className="valid-cell"
                                 style={{
                                   ...styles.timeCell,

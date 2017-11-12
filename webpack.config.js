@@ -8,7 +8,7 @@ const rules = [
   }
 ];
 
-const package = {
+const picker = {
   entry: "./src/",
   output: {
     path: __dirname,
@@ -33,4 +33,4 @@ const demo = {
   module: { rules }
 };
 
-module.exports = [package, demo];
+module.exports = [picker, demo];
