@@ -30,7 +30,7 @@ class Demo extends React.Component {
 
 #### Props
 
-Name | Type | Required | Description
+Name | Type | Default | Description
 ---|---|---|---
 initialValue | `Moment` | No | An initial date/time. Default is now.
 dateFormat | `string` | No | A `Moment` format. Default is "DD/MM/YY HH:mm".

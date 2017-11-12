@@ -1386,9 +1386,9 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
-date-time-picker-react@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/date-time-picker-react/-/date-time-picker-react-0.0.7.tgz#286a1a5e7ff26dd999cd110cdd9d38a8ebcde43a"
+date-time-picker-react@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/date-time-picker-react/-/date-time-picker-react-0.0.9.tgz#3f42019b4d120e25a1bd1937944cb446879f0190"
 
 debug@^2.2.0, debug@^2.6.8:
   version "2.6.9"
