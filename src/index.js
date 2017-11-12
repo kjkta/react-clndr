@@ -252,6 +252,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   <tr>
                     {daysOfTheWeek.map(day => (
                       <td
+                        key={day}
                         style={{
                           ...styles.calCell,
                           cursor: "default",
