@@ -30,15 +30,14 @@ const styles = {
     width: cellSize
   },
   timeCell: {
-    height: "100%",
-    padding: "0 10px",
     cursor: "pointer",
     userSelect: "none",
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "#ccc",
-    display: "flex",
-    alignItems: "center"
+    textAlign: "center",
+    width: cellSize,
+    height: cellSize
   },
   disabledCell: {
     color: lightGrey
@@ -185,7 +184,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 }
               : {})
           }}
-          onFocus={() => {
+          onClick={() => {
             this.setState({ showCal: !this.state.showCal });
           }}
           value={this.state.value.format(
@@ -205,7 +204,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
               outline: 0
             }}
             tabIndex="-1"
-            onBlur={() => this.setState({ showCal: false })}
+            /* onBlur={() => this.setState({ showCal: false })} */
           >
             <div
               style={{
@@ -317,7 +316,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   height: 30,
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-between",
+                  justifyContent: "flex-start",
                   alignItems: "center"
                 }}
               >
@@ -326,6 +325,9 @@ export default class DateTimePicker extends React.Component<Props, State> {
                     <div
                       style={{
                         ...styles.timeCell,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                         fontWeight: "bold",
                         color: this.props.highlightColor,
                         borderColor: this.props.highlightColor
@@ -343,44 +345,52 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 )}
                 <div
                   style={{
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    overflowX: "scroll",
-                    paddingTop: 10,
-                    paddingBottom: 10
+                    overflowX: "auto",
+                    marginTop: 10,
+                    marginBottom: 10
                   }}
                 >
-                  {this.state.showMinSelect
-                    ? ["00", "15", "30", "45"].map(min => (
-                        <div
-                          className="valid-cell"
-                          style={{
-                            ...styles.timeCell,
-                            ...(Number(min) === this.state.value.minute()
-                              ? this.getSelectedStyle()
-                              : {})
-                          }}
-                          onClick={() => this.handleMinSelect(Number(min))}
-                        >
-                          {min}
-                        </div>
-                      ))
-                    : [...Array(24).keys()].reverse().map(hour => (
-                        <div
-                          className="valid-cell"
-                          style={{
-                            ...styles.timeCell,
-                            ...(hour === this.state.value.hour()
-                              ? this.getSelectedStyle()
-                              : {})
-                          }}
-                          onClick={() => this.handleHourSelect(hour)}
-                        >
-                          {hour}
-                        </div>
-                      ))}
+                  <table
+                    style={{
+                      tableLayout: "fixed",
+                      borderCollapse: "collapse"
+                    }}
+                  >
+                    <tbody>
+                      <tr>
+                        {this.state.showMinSelect
+                          ? ["00", "15", "30", "45"].map(min => (
+                              <td
+                                className="valid-cell"
+                                style={{
+                                  ...styles.timeCell,
+                                  ...(Number(min) === this.state.value.minute()
+                                    ? this.getSelectedStyle()
+                                    : {})
+                                }}
+                                onClick={() =>
+                                  this.handleMinSelect(Number(min))}
+                              >
+                                <div style={{ width: cellSize }}>{min}</div>
+                              </td>
+                            ))
+                          : [...Array(24).keys()].reverse().map(hour => (
+                              <td
+                                className="valid-cell"
+                                style={{
+                                  ...styles.timeCell,
+                                  ...(hour === this.state.value.hour()
+                                    ? this.getSelectedStyle()
+                                    : {})
+                                }}
+                                onClick={() => this.handleHourSelect(hour)}
+                              >
+                                <div style={{ width: cellSize }}>{hour}</div>
+                              </td>
+                            ))}
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

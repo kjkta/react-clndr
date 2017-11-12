@@ -19,12 +19,13 @@ const package = {
   module: { rules },
   externals: {
     react: "react",
-    moment: "moment"
+    moment: "moment",
+    "babel-polyfill": "babel-polyfill"
   }
 };
 
 const demo = {
-  entry: "./demo/",
+  entry: ["babel-polyfill", "./demo/"],
   output: {
     path: path.resolve(__dirname, "demo/"),
     filename: "bundle.js"
