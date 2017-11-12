@@ -20,8 +20,9 @@ class Demo extends React.Component {
   }}>
   ...
 }
-
 ```
+
+#### Props
 
 Name | Type | Required | Description
 ---|---|---|---
@@ -32,3 +33,10 @@ highlightColor | `string` | No | The selected/focussed highlight color.
 min | `Moment` | No | The earliest selectable date.
 max | `Moment` | No | The lastest selectable date.
 onChange | `(value: Moment) => any` | No | Dispatches selected date/time on every date/time change.
+
+### Contributing
+
+- Install deps with `yarn`
+- Run webpack with `yarn dev`
+- Build with `yarn build`
+- Type check with `yarn flow`
