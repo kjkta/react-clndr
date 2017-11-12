@@ -10,34 +10,6 @@
   </head>
   <body>
     <div id="demo"></div>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> 
-    <script crossorigin src="https://unpkg.com/react@16.0.0/umd/react.development.js"></script> 
-    <script crossorigin src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.development.js"></script> 
-    <script src="https://unpkg.com/moment@2.19.1/moment.js"></script> 
-    <!-- <script src="../DateTimePicker.js"></script> -->
-    <script src="https://unpkg.com/date-time-picker-react@0.0.4/DateTimePicker.js"></script>
-    <script type="text/babel" data-presets="react,stage-0">
-      class Demo extends React.Component {
-        state = {
-          history: []
-        };
-        render() {
-          return (
-            <div>
-              <DateTimePicker
-                min={moment()}
-                max={moment().add(10, "days")}
-                onChange={value => {
-                  this.setState({ history: [...this.state.history, value.clone()] })}
-                }
-              />
-              <h4>History</h4>
-              <div>{this.state.history.map(moment => <div>{moment.format("dddd, MMMM Do YYYY, HH:mm")}</div>)}</div>
-            </div>
-          );
-        }
-      }
-      ReactDOM.render(<Demo />, document.getElementById("demo"));
-    </script>
+    <script src="./demo/bundle.js"></script>
   </body>
 </html>
