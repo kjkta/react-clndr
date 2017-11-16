@@ -6,6 +6,7 @@ import type Moment from "moment";
 const cellSize = 38;
 const green = "#00a699";
 const grey = "#6b6b6b";
+const mediumGrey = "#ced2d2";
 const lightGrey = "#e4e7e7";
 const arrow = (
   <svg viewBox="0 0 1000 1000">
@@ -20,7 +21,7 @@ const styles = {
     padding: 5,
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: grey,
+    borderColor: mediumGrey,
     borderRadius: 3,
     cursor: "pointer"
   },
@@ -174,7 +175,9 @@ export default class DateTimePicker extends React.Component<Props, State> {
             fontSize: 16,
             borderStyle: "solid",
             borderWidth: 1,
+            borderColor: mediumGrey,
             borderRadius: 3,
+            color: grey,
             textAlign: "center",
             ...(this.state.showCal
               ? {
@@ -195,6 +198,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
           <div
             ref={ref => (this.cal = ref)}
             style={{
+              position: "absolute",
               width: "100%",
               maxWidth: 315,
               backgroundColor: "white",
@@ -238,7 +242,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   {this.state.shownMonth.format("MMMM YYYY")}
                 </span>
                 <div
-                  className="arrow"
+                  className="date-time-picker-arrow"
                   style={styles.arrow}
                   onClick={() =>
                     this.setState({
