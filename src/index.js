@@ -167,7 +167,6 @@ export default class DateTimePicker extends React.Component<Props, State> {
         <input
           readOnly
           style={{
-            ...this.props.inputStyle,
             width: "100%",
             maxWidth: 150,
             userSelect: "none",
@@ -179,13 +178,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
             borderRadius: 3,
             color: grey,
             textAlign: "center",
-            ...(this.state.showCal
-              ? {
-                  borderColor: this.props.highlightColor,
-                  outline: "auto 5px " + this.props.highlightColor,
-                  outlineOffset: -2
-                }
-              : {})
+            ...this.props.inputStyle
           }}
           onClick={() => {
             this.setState({ showCal: !this.state.showCal });

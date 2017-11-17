@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
-import DateTimePicker from "date-time-picker-react";
+import DateTimePicker from "../DateTimePicker";
 
 class Demo extends React.Component {
   state = {
@@ -51,7 +51,8 @@ class Demo extends React.Component {
           <input
             value={this.state.highlightColor}
             onChange={({ target }) =>
-              this.setState({ highlightColor: target.value })}
+              this.setState({ highlightColor: target.value })
+            }
           />
         </div>
       </div>
