@@ -1,6 +1,6 @@
 {
   "name": "date-time-picker-react",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A date time picker for react.",
   "main": "DateTimePicker.js",
   "repository": {
