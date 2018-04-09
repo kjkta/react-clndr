@@ -1,6 +1,6 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
-import moment from "moment";
+import dateFns from "date-fns";
 import DateTimePicker from "../DateTimePicker";
 
 class Demo extends React.Component {
@@ -29,11 +29,11 @@ class Demo extends React.Component {
                 ? this.state.highlightColor
                 : undefined
             }
-            min={moment()}
-            max={moment().add(10, "days")}
+            min={new Date()}
+            max={dateFns.addDays(new Date(), 10)}
             onChange={value => {
               this.setState({
-                history: [...this.state.history, value.clone()]
+                history: this.state.history.concat(value)
               });
             }}
           />
@@ -41,8 +41,10 @@ class Demo extends React.Component {
         <div style={{ margin: "0 10" }}>
           <h4>History</h4>
           <div>
-            {this.state.history.map((moment, i) => (
-              <div key={i}>{moment.format("dddd, MMMM Do YYYY, HH:mm")}</div>
+            {this.state.history.map((date, i) => (
+              <div key={i}>
+                {dateFns.format(date, "dddd, MMMM Do YYYY, HH:mm")}
+              </div>
             ))}
           </div>
         </div>

@@ -1,7 +1,6 @@
 // @flow
 import * as React from "react";
-import moment from "moment";
-import type Moment from "moment";
+import dateFns from "date-fns";
 
 const cellSize = 38;
 const green = "#00a699";
@@ -47,12 +46,12 @@ const styles = {
 
 const daysOfTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-const getDatesInMonth = (date: Moment) => {
-  const firstDayOfMonth = date.date(1);
+const getDatesInMonth = date => {
+  const firstDayOfMonth = dateFns.startOfMonth(date);
   let weekIndex = 0;
-  return [...Array(date.daysInMonth()).keys()].map(i => {
-    const date = moment(firstDayOfMonth).add(i, "days");
-    const dayWeekIndex = date.day();
+  return [...Array(dateFns.getDaysInMonth(date)).keys()].map(i => {
+    const date = dateFns.addDays(firstDayOfMonth, i);
+    const dayWeekIndex = dateFns.getDay(date);
     weekIndex = dayWeekIndex === 0 && i != 0 ? weekIndex + 1 : weekIndex;
     return {
       dayWeekIndex,
@@ -68,28 +67,29 @@ const getDaysInWeek = days =>
     return dayInMonth ? dayInMonth : {};
   });
 
-const sortDatesByWeeksNo = days =>
-  [0, 1, 2, 3].map(weekNo =>
+const sortDatesByWeeksNo = days => {
+  const numberOfWeeks = Math.ceil(days.length / 7);
+  return [...Array(numberOfWeeks)].map((_, weekNo) =>
     getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === weekNo))
   );
+};
 
-const getDatesByWeekNo = (date: Moment) =>
-  sortDatesByWeeksNo(getDatesInMonth(date));
+const getDatesByWeekNo = date => sortDatesByWeeksNo(getDatesInMonth(date));
 
 type Props = {
-  initialValue?: Moment,
+  initialValue?: Date,
   dateFormat?: string,
   inputStyle?: { [string]: any },
   highlightColor: string,
-  min?: Moment,
-  max?: Moment,
-  onChange?: (value: Moment) => any
+  min?: Date,
+  max?: Date,
+  onChange?: (value: Date) => any
 };
 
 type State = {
-  value: Moment,
+  value: Date,
   showCal: boolean,
-  shownMonth: Moment,
+  shownMonth: Date,
   showMinSelect: boolean
 };
 
@@ -99,15 +99,15 @@ export default class DateTimePicker extends React.Component<Props, State> {
   };
   constructor(props: Props) {
     super(props);
-    const definedInitialValue = props.initialValue || moment();
-    const roundedInitialValue = definedInitialValue.set(
-      "minutes",
-      Math.round(definedInitialValue.get("minutes") / 15) * 15
+    const definedInitialValue = props.initialValue || new Date();
+    const roundedInitialValue = dateFns.setMinutes(
+      definedInitialValue,
+      Math.round(dateFns.getMinutes(definedInitialValue) / 15) * 15
     );
     this.state = {
-      value: roundedInitialValue.clone(),
+      value: roundedInitialValue,
       showCal: false,
-      shownMonth: roundedInitialValue.clone(),
+      shownMonth: roundedInitialValue,
       showMinSelect: false
     };
   }
@@ -125,24 +125,23 @@ export default class DateTimePicker extends React.Component<Props, State> {
     };
   }
 
-  handleDateSelect(date: Moment) {
-    const value = this.state.value.set({
-      year: date.get("year"),
-      month: date.get("month"),
-      date: date.get("date")
-    });
+  handleDateSelect(date: Date) {
+    let value = this.state.value;
+    value = dateFns.setYear(value, dateFns.getYear(date));
+    value = dateFns.setMonth(value, dateFns.getMonth(date));
+    value = dateFns.setDate(value, dateFns.getDate(date));
     this.setState({ value });
     this.props.onChange && this.props.onChange(value);
   }
 
   handleHourSelect(hr: number) {
-    const value = this.state.value.hour(hr);
+    const value = dateFns.setHours(this.state.value, hr);
     this.setState({ value, showMinSelect: true });
     this.props.onChange && this.props.onChange(value);
   }
 
   handleMinSelect(min: number) {
-    const value = this.state.value.minute(min);
+    const value = dateFns.setMinutes(this.state.value, min);
     this.setState({ value, showCal: false });
     this.props.onChange && this.props.onChange(value);
   }
@@ -178,12 +177,14 @@ export default class DateTimePicker extends React.Component<Props, State> {
             borderRadius: 3,
             color: grey,
             textAlign: "center",
+            cursor: "pointer",
             ...this.props.inputStyle
           }}
           onClick={() => {
             this.setState({ showCal: !this.state.showCal });
           }}
-          value={this.state.value.format(
+          value={dateFns.format(
+            this.state.value,
             this.props.dateFormat ? this.props.dateFormat : "DD/MM/YY HH:mm"
           )}
         />
@@ -224,7 +225,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   style={{ ...styles.arrow, transform: "rotate(180deg)" }}
                   onClick={() =>
                     this.setState({
-                      shownMonth: this.state.shownMonth.subtract(1, "month")
+                      shownMonth: dateFns.subMonths(this.state.shownMonth, 1)
                     })
                   }
                 >
@@ -232,14 +233,14 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 </div>
 
                 <span style={{ fontWeight: "bold", userSelect: "none" }}>
-                  {this.state.shownMonth.format("MMMM YYYY")}
+                  {dateFns.format(this.state.shownMonth, "MMMM YYYY")}
                 </span>
                 <div
                   className="date-time-picker-arrow"
                   style={styles.arrow}
                   onClick={() =>
                     this.setState({
-                      shownMonth: this.state.shownMonth.add(1, "month")
+                      shownMonth: dateFns.addMonths(this.state.shownMonth, 1)
                     })
                   }
                 >
@@ -276,10 +277,16 @@ export default class DateTimePicker extends React.Component<Props, State> {
                       {weekDays.map((day, i) => {
                         const min =
                           this.props.min &&
-                          this.props.min.startOf("day").isAfter(day.date);
+                          dateFns.isAfter(
+                            dateFns.startOfDay(this.props.min),
+                            day.date
+                          );
                         const max =
                           this.props.max &&
-                          this.props.max.endOf("day").isBefore(day.date);
+                          dateFns.isBefore(
+                            dateFns.endOfDay(this.props.max),
+                            day.date
+                          );
                         // Render days in week for each week
                         return day.date ? (
                           <td
@@ -291,7 +298,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                               borderStyle: "solid",
                               borderColor: "#ccc",
                               cursor: "pointer",
-                              ...(day.date.isSame(this.state.value, "day")
+                              ...(dateFns.isSameDay(day.date, this.state.value)
                                 ? this.getSelectedStyle()
                                 : {}),
                               ...(min || max ? styles.disabledCell : {})
@@ -300,7 +307,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                               !(min || max) && this.handleDateSelect(day.date)
                             }
                           >
-                            {day.date.date()}
+                            {dateFns.getDate(day.date)}
                           </td>
                         ) : (
                           <td key={i} />
@@ -334,7 +341,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                       }}
                       onClick={() => this.setState({ showMinSelect: false })}
                     >
-                      {this.state.value.hour()}
+                      {dateFns.getHours(this.state.value)}
                     </div>
                     <div style={{ padding: "0 10", fontWeight: "bold" }}>:</div>
                   </div>
@@ -365,7 +372,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
                                 className="valid-cell"
                                 style={{
                                   ...styles.timeCell,
-                                  ...(Number(min) === this.state.value.minute()
+                                  ...(Number(min) ===
+                                  dateFns.getMinutes(this.state.value)
                                     ? this.getSelectedStyle()
                                     : {})
                                 }}
@@ -382,7 +390,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
                                 className="valid-cell"
                                 style={{
                                   ...styles.timeCell,
-                                  ...(hour === this.state.value.hour()
+                                  ...(hour ===
+                                  dateFns.getHours(this.state.value)
                                     ? this.getSelectedStyle()
                                     : {})
                                 }}

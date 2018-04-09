@@ -1,6 +1,6 @@
 {
   "name": "date-time-picker-react",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "description": "A date time picker for react.",
   "main": "DateTimePicker.js",
   "repository": {
@@ -17,41 +17,41 @@
   ],
   "prepublish": "npm run build",
   "scripts": {
-    "prettier": "prettier --write '{webpack,demo/index,src/index}.js",
+    "prettier": "prettier --write {webpack,demo/index,src/index}.js",
     "dev": "NODE_ENV=development webpack --watch",
     "build": "NODE_ENV=production webpack -p",
     "precommit": "./node_modules/lint-staged/index.js",
     "lint": "eslint '{webpack,demo/index,src/index}.js'"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "@babel/core": "^7.0.0-beta.44",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.44",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.44",
+    "@babel/preset-env": "^7.0.0-beta.44",
+    "@babel/preset-flow": "^7.0.0-beta.44",
+    "@babel/preset-react": "^7.0.0-beta.44",
     "babel-eslint": "^8.0.1",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^8.0.0-beta",
     "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "date-time-picker-react": "^0.0.9",
+    "date-fns": "^1.29.0",
     "eslint": "^4.11.0",
     "eslint-plugin-react": "^7.4.0",
     "flow-bin": "^0.58.0",
     "husky": "^0.14.3",
-    "lint-staged": "^4.3.0",
-    "moment": "^2.19.2",
-    "prettier": "^1.7.4",
-    "react": "^16.1.0",
+    "lint-staged": "^7.0.4",
+    "prettier": "^1.11.1",
+    "react": "^16.3.1",
     "react-dom": "^16.1.0",
-    "webpack": "^3.8.1"
+    "webpack": "^4.5.0",
+    "webpack-bundle-analyzer": "^2.11.1",
+    "webpack-cli": "^2.0.14"
   },
   "peerDependencies": {
-    "babel-polyfill": ">=6.26.0",
-    "moment": ">=2.12.0",
     "react": ">=15.0.0"
   },
   "lint-staged": {
     "{webpack,demo/index,src/index}.js": [
-      "./node_modules/prettier/bin/prettier.js --write",
+      "./node_modules/prettier/bin-prettier.js --write",
       "git add"
     ]
   }
