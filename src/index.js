@@ -76,6 +76,13 @@ const sortDatesByWeeksNo = days => {
 
 const getDatesByWeekNo = date => sortDatesByWeeksNo(getDatesInMonth(date));
 
+const roundMinutes = (date: Date, minuteMark: number) => {
+  return dateFns.setMinutes(
+    date,
+    Math.round(dateFns.getMinutes(date) / minuteMark) * minuteMark
+  );
+};
+
 type Props = {
   initialValue?: Date,
   dateFormat?: string,
@@ -83,11 +90,12 @@ type Props = {
   highlightColor: string,
   min?: Date,
   max?: Date,
+  placeholder?: string,
   onChange?: (value: Date) => any
 };
 
 type State = {
-  value: Date,
+  value: Date | null,
   showCal: boolean,
   shownMonth: Date,
   showMinSelect: boolean
@@ -99,15 +107,13 @@ export default class DateTimePicker extends React.Component<Props, State> {
   };
   constructor(props: Props) {
     super(props);
-    const definedInitialValue = props.initialValue || new Date();
-    const roundedInitialValue = dateFns.setMinutes(
-      definedInitialValue,
-      Math.round(dateFns.getMinutes(definedInitialValue) / 15) * 15
-    );
+    const initialValue = props.initialValue
+      ? roundMinutes(props.initialValue, 15)
+      : null;
     this.state = {
-      value: roundedInitialValue,
+      value: initialValue,
       showCal: false,
-      shownMonth: roundedInitialValue,
+      shownMonth: initialValue || new Date(),
       showMinSelect: false
     };
   }
@@ -154,7 +160,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
           dangerouslySetInnerHTML={{
             __html: `
             .date-time-picker-arrow:active {
-                outline: auto 5px ${this.props.highlightColor};
+                outline-color: ${this.props.highlightColor};
                 outline-offset: -2px;
               }
             .valid-cell:hover {
@@ -170,23 +176,32 @@ export default class DateTimePicker extends React.Component<Props, State> {
             maxWidth: 150,
             userSelect: "none",
             padding: 10,
-            fontSize: 16,
+            fontSize: 14,
             borderStyle: "solid",
             borderWidth: 1,
             borderColor: mediumGrey,
             borderRadius: 3,
             color: grey,
-            textAlign: "center",
             cursor: "pointer",
+            ...(!this.state.value
+              ? { textAlign: "left" }
+              : { textAlign: "center" }),
             ...this.props.inputStyle
           }}
           onClick={() => {
             this.setState({ showCal: !this.state.showCal });
           }}
-          value={dateFns.format(
-            this.state.value,
-            this.props.dateFormat ? this.props.dateFormat : "DD/MM/YY HH:mm"
-          )}
+          placeholder={this.props.placeholder}
+          value={
+            this.state.value
+              ? dateFns.format(
+                  this.state.value,
+                  this.props.dateFormat
+                    ? this.props.dateFormat
+                    : "DD/MM/YY HH:mm"
+                )
+              : ""
+          }
         />
         {this.state.showCal && (
           <div
@@ -199,7 +214,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
               borderRadius: 3,
               margin: "10px 0",
               border: "1px solid #eee",
-              outline: 0
+              outline: 0,
+              zIndex: 50
             }}
             tabIndex="-1"
             onBlur={() => this.setState({ showCal: false })}
@@ -328,23 +344,25 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 }}
               >
                 {this.state.showMinSelect ? (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <div
-                      style={{
-                        ...styles.timeCell,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        fontWeight: "bold",
-                        color: this.props.highlightColor,
-                        borderColor: this.props.highlightColor
-                      }}
-                      onClick={() => this.setState({ showMinSelect: false })}
-                    >
-                      {dateFns.getHours(this.state.value)}
+                  <React.Fragment>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <div
+                        style={{
+                          ...styles.timeCell,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          color: this.props.highlightColor,
+                          borderColor: this.props.highlightColor
+                        }}
+                        onClick={() => this.setState({ showMinSelect: false })}
+                      >
+                        {dateFns.getHours(this.state.value)}
+                      </div>
                     </div>
                     <div style={{ padding: "0 10", fontWeight: "bold" }}>:</div>
-                  </div>
+                  </React.Fragment>
                 ) : (
                   <div style={{ marginRight: 10, userSelect: "none" }}>
                     Hour:

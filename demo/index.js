@@ -24,6 +24,7 @@ class Demo extends React.Component {
         <div>
           <h4>Picker</h4>
           <DateTimePicker
+            placeholder="picka date"
             highlightColor={
               this.state.highlightColor.length > 0
                 ? this.state.highlightColor
