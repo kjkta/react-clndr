@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
 import dateFns from "date-fns";
-import DateTimePicker from "../DateTimePicker";
+import DateTimePicker from "../dist/";
 
 class Demo extends React.Component {
   state = {

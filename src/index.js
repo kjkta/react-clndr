@@ -87,6 +87,7 @@ type Props = {
   initialValue?: Date,
   dateFormat?: string,
   inputStyle?: { [string]: any },
+  calStyles?: { [string]: any },
   highlightColor: string,
   min?: Date,
   max?: Date,
@@ -172,8 +173,6 @@ export default class DateTimePicker extends React.Component<Props, State> {
         <input
           readOnly
           style={{
-            width: "100%",
-            maxWidth: 150,
             userSelect: "none",
             padding: 10,
             fontSize: 14,
@@ -215,7 +214,8 @@ export default class DateTimePicker extends React.Component<Props, State> {
               margin: "10px 0",
               border: "1px solid #eee",
               outline: 0,
-              zIndex: 50
+              zIndex: 50,
+              ...(this.props.calStyles ? this.props.calStyles : {})
             }}
             tabIndex="-1"
             onBlur={() => this.setState({ showCal: false })}

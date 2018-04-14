@@ -2,7 +2,7 @@
   "name": "date-time-picker-react",
   "version": "0.1.1",
   "description": "A date time picker for react.",
-  "main": "DateTimePicker.js",
+  "main": "dist/index.js",
   "repository": {
     "url": "https://github.com/kjkta/date-time-picker-react",
     "type": "git"
@@ -18,10 +18,23 @@
   "prepublish": "npm run build",
   "scripts": {
     "prettier": "prettier --write {webpack,demo/index,src/index}.js",
-    "dev": "NODE_ENV=development webpack --watch",
-    "build": "NODE_ENV=production webpack -p",
+    "dev": "npm run build -- --watch",
+    "build": "babel src --out-dir dist",
+    "build-demo": "babel demo --out-file demo/bundle.js",
     "precommit": "./node_modules/lint-staged/index.js",
+    "prepublish": "npm run build && npm run build-demo",
     "lint": "eslint '{webpack,demo/index,src/index}.js'"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react",
+      "@babel/preset-flow"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-proposal-class-properties"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.44",
@@ -41,10 +54,7 @@
     "lint-staged": "^7.0.4",
     "prettier": "^1.11.1",
     "react": "^16.3.1",
-    "react-dom": "^16.1.0",
-    "webpack": "^4.5.0",
-    "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^2.0.14"
+    "react-dom": "^16.1.0"
   },
   "peerDependencies": {
     "react": ">=15.0.0"
@@ -54,5 +64,8 @@
       "./node_modules/prettier/bin-prettier.js --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "@babel/cli": "^7.0.0-beta.44"
   }
 }
