@@ -29,15 +29,12 @@ const styles = {
     userSelect: "none",
     width: cellSize
   },
-  timeCell: {
-    cursor: "pointer",
-    userSelect: "none",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#ccc",
-    textAlign: "center",
-    width: cellSize,
-    height: cellSize
+  timeInput: {
+    borderWidth: 0,
+    textAlign: "right",
+    width: 40,
+    fontSize: 16,
+    padding: 2.5
   },
   disabledCell: {
     color: lightGrey
@@ -98,8 +95,7 @@ type Props = {
 type State = {
   value: Date | null,
   showCal: boolean,
-  shownMonth: Date,
-  showMinSelect: boolean
+  shownMonth: Date
 };
 
 export default class DateTimePicker extends React.Component<Props, State> {
@@ -114,15 +110,10 @@ export default class DateTimePicker extends React.Component<Props, State> {
     this.state = {
       value: initialValue,
       showCal: false,
-      shownMonth: initialValue || new Date(),
-      showMinSelect: false
+      shownMonth: initialValue || new Date()
     };
   }
   cal = {};
-
-  componentDidUpdate() {
-    this.state.showCal && this.cal && this.cal.focus();
-  }
 
   getSelectedStyle() {
     return {
@@ -141,15 +132,16 @@ export default class DateTimePicker extends React.Component<Props, State> {
     this.props.onChange && this.props.onChange(value);
   }
 
-  handleHourSelect(hr: number) {
-    const value = dateFns.setHours(this.state.value, hr);
-    this.setState({ value, showMinSelect: true });
+  handleHourSelect(hr: string) {
+    const value = dateFns.setHours(this.state.value, Number(hr));
+    this.setState({ value });
     this.props.onChange && this.props.onChange(value);
   }
 
-  handleMinSelect(min: number) {
-    const value = dateFns.setMinutes(this.state.value, min);
-    this.setState({ value, showCal: false });
+  handleMinSelect(min: string) {
+    console.log(parseInt(min));
+    const value = dateFns.setMinutes(this.state.value, parseInt(min));
+    this.setState({ value });
     this.props.onChange && this.props.onChange(value);
   }
 
@@ -218,7 +210,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
               ...(this.props.calStyles ? this.props.calStyles : {})
             }}
             tabIndex="-1"
-            onBlur={() => this.setState({ showCal: false })}
+            // onBlur={() => this.setState({ showCal: false })}
           >
             <div
               style={{
@@ -343,85 +335,29 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   alignItems: "center"
                 }}
               >
-                {this.state.showMinSelect ? (
-                  <React.Fragment>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <div
-                        style={{
-                          ...styles.timeCell,
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          fontWeight: "bold",
-                          color: this.props.highlightColor,
-                          borderColor: this.props.highlightColor
-                        }}
-                        onClick={() => this.setState({ showMinSelect: false })}
-                      >
-                        {dateFns.getHours(this.state.value)}
-                      </div>
-                    </div>
-                    <div style={{ padding: "0 10", fontWeight: "bold" }}>:</div>
-                  </React.Fragment>
-                ) : (
-                  <div style={{ marginRight: 10, userSelect: "none" }}>
-                    Hour:
-                  </div>
-                )}
-                <div
-                  style={{
-                    overflowX: "auto",
-                    marginTop: 10,
-                    marginBottom: 10
+                <label htmlFor="hour">Time: </label>
+                <input
+                  id="hour"
+                  type="number"
+                  style={styles.timeInput}
+                  min={0}
+                  max={23}
+                  value={dateFns.getHours(this.state.value)}
+                  onChange={({ target }) => {
+                    this.handleHourSelect(target.value);
                   }}
-                >
-                  <table
-                    style={{
-                      tableLayout: "fixed",
-                      borderCollapse: "collapse"
-                    }}
-                  >
-                    <tbody>
-                      <tr>
-                        {this.state.showMinSelect
-                          ? ["00", "15", "30", "45"].map(min => (
-                              <td
-                                key={min}
-                                className="valid-cell"
-                                style={{
-                                  ...styles.timeCell,
-                                  ...(Number(min) ===
-                                  dateFns.getMinutes(this.state.value)
-                                    ? this.getSelectedStyle()
-                                    : {})
-                                }}
-                                onClick={() =>
-                                  this.handleMinSelect(Number(min))
-                                }
-                              >
-                                <div style={{ width: cellSize }}>{min}</div>
-                              </td>
-                            ))
-                          : [...Array(24).keys()].reverse().map(hour => (
-                              <td
-                                key={hour}
-                                className="valid-cell"
-                                style={{
-                                  ...styles.timeCell,
-                                  ...(hour ===
-                                  dateFns.getHours(this.state.value)
-                                    ? this.getSelectedStyle()
-                                    : {})
-                                }}
-                                onClick={() => this.handleHourSelect(hour)}
-                              >
-                                <div style={{ width: cellSize }}>{hour}</div>
-                              </td>
-                            ))}
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                />
+                :
+                <input
+                  type="number"
+                  style={styles.timeInput}
+                  min={0}
+                  max={59}
+                  value={dateFns.getMinutes(this.state.value)}
+                  onChange={({ target }) => {
+                    this.handleMinSelect(target.value);
+                  }}
+                />
               </div>
             </div>
           </div>

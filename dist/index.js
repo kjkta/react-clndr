@@ -17,8 +17,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -27,9 +25,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -65,15 +69,12 @@ var styles = {
     userSelect: "none",
     width: cellSize
   },
-  timeCell: {
-    cursor: "pointer",
-    userSelect: "none",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#ccc",
-    textAlign: "center",
-    width: cellSize,
-    height: cellSize
+  timeInput: {
+    borderWidth: 0,
+    textAlign: "right",
+    width: 40,
+    fontSize: 16,
+    padding: 2.5
   },
   disabledCell: {
     color: lightGrey
@@ -137,29 +138,20 @@ function (_React$Component) {
 
     _classCallCheck(this, DateTimePicker);
 
-    _this = _possibleConstructorReturn(this, (DateTimePicker.__proto__ || Object.getPrototypeOf(DateTimePicker)).call(this, props));
-    Object.defineProperty(_assertThisInitialized(_this), "cal", {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: {}
-    });
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DateTimePicker).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "cal", {});
+
     var initialValue = props.initialValue ? roundMinutes(props.initialValue, 15) : null;
     _this.state = {
       value: initialValue,
       showCal: false,
-      shownMonth: initialValue || new Date(),
-      showMinSelect: false
+      shownMonth: initialValue || new Date()
     };
     return _this;
   }
 
   _createClass(DateTimePicker, [{
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      this.state.showCal && this.cal && this.cal.focus();
-    }
-  }, {
     key: "getSelectedStyle",
     value: function getSelectedStyle() {
       return {
@@ -183,22 +175,22 @@ function (_React$Component) {
   }, {
     key: "handleHourSelect",
     value: function handleHourSelect(hr) {
-      var value = _dateFns.default.setHours(this.state.value, hr);
+      var value = _dateFns.default.setHours(this.state.value, Number(hr));
 
       this.setState({
-        value: value,
-        showMinSelect: true
+        value: value
       });
       this.props.onChange && this.props.onChange(value);
     }
   }, {
     key: "handleMinSelect",
     value: function handleMinSelect(min) {
-      var value = _dateFns.default.setMinutes(this.state.value, min);
+      console.log(parseInt(min));
+
+      var value = _dateFns.default.setMinutes(this.state.value, parseInt(min));
 
       this.setState({
-        value: value,
-        showCal: false
+        value: value
       });
       this.props.onChange && this.props.onChange(value);
     }
@@ -237,8 +229,8 @@ function (_React$Component) {
         placeholder: this.props.placeholder,
         value: this.state.value ? _dateFns.default.format(this.state.value, this.props.dateFormat ? this.props.dateFormat : "DD/MM/YY HH:mm") : ""
       }), this.state.showCal && React.createElement("div", {
-        ref: function ref(_ref3) {
-          return _this2.cal = _ref3;
+        ref: function ref(_ref5) {
+          return _this2.cal = _ref5;
         },
         style: _objectSpread({
           position: "absolute",
@@ -251,12 +243,8 @@ function (_React$Component) {
           outline: 0,
           zIndex: 50
         }, this.props.calStyles ? this.props.calStyles : {}),
-        tabIndex: "-1",
-        onBlur: function onBlur() {
-          return _this2.setState({
-            showCal: false
-          });
-        }
+        tabIndex: "-1" // onBlur={() => this.setState({ showCal: false })}
+
       }, React.createElement("div", {
         style: {
           display: "flex",
@@ -346,73 +334,32 @@ function (_React$Component) {
           justifyContent: "flex-start",
           alignItems: "center"
         }
-      }, this.state.showMinSelect ? React.createElement(React.Fragment, null, React.createElement("div", {
-        style: {
-          display: "flex",
-          alignItems: "center"
+      }, React.createElement("label", {
+        htmlFor: "hour"
+      }, "Time: "), React.createElement("input", {
+        id: "hour",
+        type: "number",
+        style: styles.timeInput,
+        min: 0,
+        max: 23,
+        value: _dateFns.default.getHours(this.state.value),
+        onChange: function onChange(_ref3) {
+          var target = _ref3.target;
+
+          _this2.handleHourSelect(target.value);
         }
-      }, React.createElement("div", {
-        style: _objectSpread({}, styles.timeCell, {
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontWeight: "bold",
-          color: this.props.highlightColor,
-          borderColor: this.props.highlightColor
-        }),
-        onClick: function onClick() {
-          return _this2.setState({
-            showMinSelect: false
-          });
+      }), ":", React.createElement("input", {
+        type: "number",
+        style: styles.timeInput,
+        min: 0,
+        max: 59,
+        value: _dateFns.default.getMinutes(this.state.value),
+        onChange: function onChange(_ref4) {
+          var target = _ref4.target;
+
+          _this2.handleMinSelect(target.value);
         }
-      }, _dateFns.default.getHours(this.state.value))), React.createElement("div", {
-        style: {
-          padding: "0 10",
-          fontWeight: "bold"
-        }
-      }, ":")) : React.createElement("div", {
-        style: {
-          marginRight: 10,
-          userSelect: "none"
-        }
-      }, "Hour:"), React.createElement("div", {
-        style: {
-          overflowX: "auto",
-          marginTop: 10,
-          marginBottom: 10
-        }
-      }, React.createElement("table", {
-        style: {
-          tableLayout: "fixed",
-          borderCollapse: "collapse"
-        }
-      }, React.createElement("tbody", null, React.createElement("tr", null, this.state.showMinSelect ? ["00", "15", "30", "45"].map(function (min) {
-        return React.createElement("td", {
-          key: min,
-          className: "valid-cell",
-          style: _objectSpread({}, styles.timeCell, Number(min) === _dateFns.default.getMinutes(_this2.state.value) ? _this2.getSelectedStyle() : {}),
-          onClick: function onClick() {
-            return _this2.handleMinSelect(Number(min));
-          }
-        }, React.createElement("div", {
-          style: {
-            width: cellSize
-          }
-        }, min));
-      }) : _toConsumableArray(Array(24).keys()).reverse().map(function (hour) {
-        return React.createElement("td", {
-          key: hour,
-          className: "valid-cell",
-          style: _objectSpread({}, styles.timeCell, hour === _dateFns.default.getHours(_this2.state.value) ? _this2.getSelectedStyle() : {}),
-          onClick: function onClick() {
-            return _this2.handleHourSelect(hour);
-          }
-        }, React.createElement("div", {
-          style: {
-            width: cellSize
-          }
-        }, hour));
-      })))))))));
+      })))));
     }
   }]);
 
@@ -420,11 +367,7 @@ function (_React$Component) {
 }(React.Component);
 
 exports.default = DateTimePicker;
-Object.defineProperty(DateTimePicker, "defaultProps", {
-  configurable: true,
-  enumerable: true,
-  writable: true,
-  value: {
-    highlightColor: green
-  }
+
+_defineProperty(DateTimePicker, "defaultProps", {
+  highlightColor: green
 });

@@ -9,20 +9,15 @@
   },
   "author": "Kyle Thomson <kjay.thomson@gmail.com>",
   "license": "MIT",
-  "keywords": [
-    "react",
-    "date",
-    "time",
-    "picker"
-  ],
-  "prepublish": "npm run build",
+  "keywords": ["react", "date", "time", "picker"],
+  "prepublish": "yarn build",
   "scripts": {
     "prettier": "prettier --write {webpack,demo/index,src/index}.js",
-    "dev": "npm run build -- --watch",
-    "build": "babel src --out-dir dist",
+    "dev": "babel src -d dist --watch",
+    "build": "babel src -d dist",
     "build-demo": "babel demo --out-file demo/bundle.js",
     "precommit": "./node_modules/lint-staged/index.js",
-    "prepublish": "npm run build && npm run build-demo",
+    "prepublish": "yarn build && yarn build-demo",
     "lint": "eslint '{webpack,demo/index,src/index}.js'"
   },
   "babel": {
@@ -57,9 +52,6 @@
   },
   "peerDependencies": {
     "react": ">=15.0.0"
-  },
-  "externals": {
-    "react": "commonjs react"
   },
   "lint-staged": {
     "{webpack,demo/index,src/index}.js": [
