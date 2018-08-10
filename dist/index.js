@@ -175,6 +175,10 @@ function (_React$Component) {
   }, {
     key: "handleHourSelect",
     value: function handleHourSelect(hr) {
+      hr = Number(hr);
+      hr = Math.min(23, hr);
+      hr = Math.max(0, hr);
+
       var value = _dateFns.default.setHours(this.state.value, Number(hr));
 
       this.setState({
@@ -185,7 +189,9 @@ function (_React$Component) {
   }, {
     key: "handleMinSelect",
     value: function handleMinSelect(min) {
-      console.log(parseInt(min));
+      min = Number(min);
+      min = Math.min(59, min);
+      min = Math.max(0, min);
 
       var value = _dateFns.default.setMinutes(this.state.value, parseInt(min));
 
@@ -343,7 +349,7 @@ function (_React$Component) {
         min: 0,
         max: 23,
         value: _dateFns.default.getHours(this.state.value),
-        onChange: function onChange(_ref3) {
+        onInput: function onInput(_ref3) {
           var target = _ref3.target;
 
           _this2.handleHourSelect(target.value);
@@ -354,7 +360,7 @@ function (_React$Component) {
         min: 0,
         max: 59,
         value: _dateFns.default.getMinutes(this.state.value),
-        onChange: function onChange(_ref4) {
+        onInput: function onInput(_ref4) {
           var target = _ref4.target;
 
           _this2.handleMinSelect(target.value);

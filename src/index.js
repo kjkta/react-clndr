@@ -133,13 +133,18 @@ export default class DateTimePicker extends React.Component<Props, State> {
   }
 
   handleHourSelect(hr: string) {
+    hr = Number(hr);
+    hr = Math.min(23, hr);
+    hr = Math.max(0, hr);
     const value = dateFns.setHours(this.state.value, Number(hr));
     this.setState({ value });
     this.props.onChange && this.props.onChange(value);
   }
 
   handleMinSelect(min: string) {
-    console.log(parseInt(min));
+    min = Number(min);
+    min = Math.min(59, min);
+    min = Math.max(0, min);
     const value = dateFns.setMinutes(this.state.value, parseInt(min));
     this.setState({ value });
     this.props.onChange && this.props.onChange(value);
@@ -343,7 +348,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   min={0}
                   max={23}
                   value={dateFns.getHours(this.state.value)}
-                  onChange={({ target }) => {
+                  onInput={({ target }) => {
                     this.handleHourSelect(target.value);
                   }}
                 />
@@ -354,7 +359,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                   min={0}
                   max={59}
                   value={dateFns.getMinutes(this.state.value)}
-                  onChange={({ target }) => {
+                  onInput={({ target }) => {
                     this.handleMinSelect(target.value);
                   }}
                 />
