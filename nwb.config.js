@@ -6,7 +6,9 @@ module.exports = {
     esModules: true,
     umd: false
   },
-  aliases: {
-    src: path.resolve("/src")
+  webpack: {
+    aliases: {
+      src: path.resolve("/src")
+    }
   }
 };
