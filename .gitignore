@@ -1,3 +1,6 @@
 node_modules
 yarn-error.log
-dist
+lib
+yarn.lock
+package-lock.json
+.cache
