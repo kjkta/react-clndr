@@ -47,7 +47,7 @@ const daysOfTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const getDatesInMonth = date => {
   const firstDayOfMonth = dateFns.startOfMonth(date);
   let weekIndex = 0;
-  return [...Array(dateFns.getDaysInMonth(date)).keys()].map(i => {
+  return Array.from(Array(dateFns.getDaysInMonth(date)).keys()).map(i => {
     const date = dateFns.addDays(firstDayOfMonth, i);
     const dayWeekIndex = dateFns.getDay(date);
     weekIndex = dayWeekIndex === 0 && i != 0 ? weekIndex + 1 : weekIndex;
@@ -67,22 +67,15 @@ const getDaysInWeek = days =>
 
 const sortDatesByWeeksNo = days => {
   const numberOfWeeks = Math.ceil(days.length / 7);
-  return [...Array(numberOfWeeks)].map((_, weekNo) =>
+  return Array.from(Array(numberOfWeeks).keys()).map(weekNo =>
     getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === weekNo))
   );
 };
 
 const getDatesByWeekNo = date => sortDatesByWeeksNo(getDatesInMonth(date));
 
-const roundMinutes = (date: Date, minuteMark: number) => {
-  return dateFns.setMinutes(
-    date,
-    Math.round(dateFns.getMinutes(date) / minuteMark) * minuteMark
-  );
-};
-
 type Props = {
-  initialValue?: Date,
+  initialValue: Date,
   dateFormat?: string,
   inputStyle?: { [string]: any },
   calStyles?: { [string]: any },
@@ -101,17 +94,15 @@ type State = {
 
 export default class DateTimePicker extends React.Component<Props, State> {
   static defaultProps = {
+    initialValue: new Date(),
     highlightColor: green
   };
   constructor(props: Props) {
     super(props);
-    const initialValue = props.initialValue
-      ? roundMinutes(props.initialValue, 15)
-      : null;
     this.state = {
-      value: initialValue,
+      value: props.initialValue,
       showCal: false,
-      shownMonth: initialValue || new Date()
+      shownMonth: props.initialValue || new Date()
     };
   }
   cal = {};
@@ -185,7 +176,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
               : { textAlign: "center" }),
             ...this.props.inputStyle
           }}
-          onClick={e => {
+          onClick={() => {
             if (!this.state.showCal) {
               this.setState({ showCal: true });
             }

@@ -1,12 +1,11 @@
 ## A Date & Time picker for React
 
-View the demo [here](https://kjkta.github.io/date-time-picker-react/).
-
-[![NPM](https://nodei.co/npm/date-time-picker-react.png)](https://nodei.co/npm/date-time-picker-react/)
+[![npm package][npm-badge]][npm]
+[![Coveralls][coveralls-badge]][coveralls]
 
 ### Install
 
-`yarn add date-time-picker-react -D`
+`yarn add date-time-picker-react`
 
 ### Usage
 
@@ -44,4 +43,9 @@ onChange | `(value: Date) => any` | null | Dispatches selected date/time on ever
 - Run webpack with `yarn dev`
 - Build with `yarn build`
 - Type check with `yarn flow`
-- Lint with `yarn lint`
+
+[npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
+[npm]: https://www.npmjs.org/package/npm-package
+
+[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
+[coveralls]: https://coveralls.io/github/user/repo

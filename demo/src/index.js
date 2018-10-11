@@ -1,6 +1,6 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
-import DateTimePicker from "./src/index";
+import DateTimePicker from "../../src/index";
 import dateFns from "date-fns";
 
 class Demo extends React.Component {
@@ -63,4 +63,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById("demo"));
+ReactDOM.render(<Demo />, document.querySelector("#demo"));

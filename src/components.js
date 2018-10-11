@@ -14,7 +14,9 @@ export class ClickedOutside extends React.Component<
     document.addEventListener("click", this.handleClick, true);
   }
   componentWillUnmount() {
-    document.removeEventListener("click", this.handleClick, false);
+    if (document) {
+      document.removeEventListener("click", this.handleClick, false);
+    }
   }
   handleClick = (e: Event) => {
     let ref = this.ref.current;
@@ -23,10 +25,11 @@ export class ClickedOutside extends React.Component<
     }
   };
   render() {
+    // eslint-disable-next-line no-unused-vars
     let { children, onOutsideClick, ...rest } = this.props;
     return (
       <div ref={this.ref} {...rest}>
-        {this.props.children}
+        {children}
       </div>
     );
   }

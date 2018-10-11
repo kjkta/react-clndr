@@ -1,52 +1,78 @@
 {
   "name": "date-time-picker-react",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A date time picker for react.",
   "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "es"
+  ],
+  "scripts": {
+    "build": "nwb build-react-component",
+    "clean": "nwb clean-module && nwb clean-demo",
+    "prepublishOnly": "npm run build",
+    "start": "nwb serve-react-demo",
+    "test": "nwb test-react",
+    "test:coverage": "nwb test-react --coverage",
+    "test:watch": "nwb test-react --server"
+  },
+  "peerDependencies": {
+    "react": "16.x"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "date-fns": "^1.29.0",
+    "eslint": "^5.6.1",
+    "eslint-plugin-flowtype": "^2.50.3",
+    "eslint-plugin-react": "^7.11.1",
+    "flow-bin": "^0.82.0",
+    "nwb": "0.23.x",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
+  },
+  "author": "Kyle Thomson <kjay.thomson@gmail.com>",
+  "license": "MIT",
   "repository": {
     "url": "https://github.com/kjkta/date-time-picker-react",
     "type": "git"
   },
-  "author": "Kyle Thomson <kjay.thomson@gmail.com>",
-  "license": "MIT",
   "keywords": [
     "react",
     "date",
     "time",
     "picker"
   ],
-  "scripts": {
-    "dev": "parcel index.html",
-    "build": "babel src --out-dir lib",
-    "prepublishOnly": "yarn build"
-  },
-  "babel": {
-    "presets": [
-      "babel-preset-react",
-      "babel-preset-flow"
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:flowtype/recommended"
     ],
+    "env": {
+      "browser": true,
+      "es6": true,
+      "jest": true
+    },
     "plugins": [
-      "babel-plugin-transform-object-rest-spread",
-      "babel-plugin-transform-class-properties"
-    ]
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-react": "^6.24.1",
-    "date-fns": "^1.29.0",
-    "eslint": "^5.6.1",
-    "eslint-plugin-react": "^7.11.1",
-    "flow-bin": "^0.82.0",
-    "parcel": "^1.10.2",
-    "prettier": "^1.14.3",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2"
-  },
-  "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+      "react",
+      "flowtype"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "rules": {
+      "react/prop-types": 0,
+      "react/display-name": 0,
+      "flowtype/space-after-type-colon": [
+        2,
+        "always",
+        {
+          "allowLineBreak": true
+        }
+      ]
+    }
   }
 }
