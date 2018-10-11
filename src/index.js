@@ -5,7 +5,6 @@ import { ClickedOutside } from "./components";
 
 const cellSize = 38;
 const green = "#00a699";
-const grey = "#6b6b6b";
 const mediumGrey = "#ced2d2";
 const lightGrey = "#e4e7e7";
 const arrow = (
@@ -161,21 +160,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
         />
         <input
           readOnly={true}
-          style={{
-            userSelect: "none",
-            padding: 10,
-            fontSize: 14,
-            borderStyle: "solid",
-            borderWidth: 1,
-            borderColor: mediumGrey,
-            borderRadius: 3,
-            color: grey,
-            cursor: "pointer",
-            ...(!this.state.value
-              ? { textAlign: "left" }
-              : { textAlign: "center" }),
-            ...this.props.inputStyle
-          }}
+          style={this.props.inputStyle}
           onClick={() => {
             if (!this.state.showCal) {
               this.setState({ showCal: true });
