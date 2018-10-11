@@ -1,6 +1,7 @@
 // @flow
 import * as React from "react";
 import dateFns from "date-fns";
+import { ClickedOutside } from "./components";
 
 const cellSize = 38;
 const green = "#00a699";
@@ -168,7 +169,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
           }}
         />
         <input
-          readOnly
+          readOnly={true}
           style={{
             userSelect: "none",
             padding: 10,
@@ -184,8 +185,10 @@ export default class DateTimePicker extends React.Component<Props, State> {
               : { textAlign: "center" }),
             ...this.props.inputStyle
           }}
-          onClick={() => {
-            this.setState({ showCal: !this.state.showCal });
+          onClick={e => {
+            if (!this.state.showCal) {
+              this.setState({ showCal: true });
+            }
           }}
           placeholder={this.props.placeholder}
           value={
@@ -200,8 +203,11 @@ export default class DateTimePicker extends React.Component<Props, State> {
           }
         />
         {this.state.showCal && (
-          <div
-            ref={ref => (this.cal = ref)}
+          <ClickedOutside
+            onOutsideClick={e => {
+              e.stopPropagation();
+              this.setState({ showCal: false });
+            }}
             style={{
               position: "absolute",
               width: "100%",
@@ -215,7 +221,6 @@ export default class DateTimePicker extends React.Component<Props, State> {
               ...(this.props.calStyles ? this.props.calStyles : {})
             }}
             tabIndex="-1"
-            // onBlur={() => this.setState({ showCal: false })}
           >
             <div
               style={{
@@ -365,7 +370,7 @@ export default class DateTimePicker extends React.Component<Props, State> {
                 />
               </div>
             </div>
-          </div>
+          </ClickedOutside>
         )}
       </div>
     );
