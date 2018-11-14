@@ -64,7 +64,16 @@ const getDaysInWeek = days =>
   });
 
 const sortDatesByWeeksNo = days => {
-  const numberOfWeeks = Math.ceil(days.length / 7);
+  const numberOfWeeks = days.reduce((n, day, i) => {
+    let prevDay = days[i - 1];
+    if (prevDay) {
+      let same = dateFns.isSameWeek(prevDay.date, day.date);
+      if (!same) {
+        return n + 1;
+      }
+    }
+    return n;
+  }, 1);
   return Array.from(Array(numberOfWeeks).keys()).map(weekNo =>
     getDaysInWeek(days.filter(({ weekIndex }) => weekIndex === weekNo))
   );
