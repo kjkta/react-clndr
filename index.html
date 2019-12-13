@@ -1,0 +1,21 @@
+<div id="calendar"></div>
+<div id="dtp"></div>
+
+<script
+  src="https://unpkg.com/react@16/umd/react.development.js"
+  crossorigin
+></script>
+<script
+  src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+  crossorigin
+></script>
+<script src="./calendar/dist/index.umd.js"></script>
+<script src="./date-time-picker/dist/index.umd.js"></script>
+
+<script type="text/javascript">
+  const calendar = document.getElementById("calendar");
+  ReactDOM.render(React.createElement(Calendar), calendar);
+
+  const dtp = document.getElementById("dtp");
+  ReactDOM.render(React.createElement(DateTimePicker), dtp);
+</script>

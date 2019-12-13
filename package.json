@@ -1,20 +1,12 @@
 {
-  "name": "date-time-picker-react",
-  "version": "2.0.4",
-  "description": "A date time picker for react.",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "files": [
-    "es"
+  "name": "react-calendar-stuff",
+  "private": true,
+  "workspaces": [
+    "date-time-picker",
+    "calendar"
   ],
   "scripts": {
-    "build": "nwb build-react-component",
-    "clean": "nwb clean-module && nwb clean-demo",
-    "prepublishOnly": "npm run build",
-    "start": "nwb serve-react-demo",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server"
+    "dev": "yarn workspaces run dev"
   },
   "peerDependencies": {
     "react": "16.x"
@@ -26,54 +18,10 @@
     "eslint-plugin-flowtype": "^2.50.3",
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.82.0",
-    "nwb": "0.23.x",
+    "microbundle": "^0.12.0-next.6",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
   "author": "Kyle Thomson <kjay.thomson@gmail.com>",
-  "license": "MIT",
-  "repository": {
-    "url": "https://github.com/kjkta/date-time-picker-react",
-    "type": "git"
-  },
-  "keywords": [
-    "react",
-    "date",
-    "time",
-    "picker"
-  ],
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:flowtype/recommended"
-    ],
-    "env": {
-      "browser": true,
-      "es6": true,
-      "jest": true,
-      "node": true
-    },
-    "plugins": [
-      "react",
-      "flowtype"
-    ],
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    },
-    "rules": {
-      "react/prop-types": 0,
-      "react/display-name": 0,
-      "flowtype/space-after-type-colon": [
-        2,
-        "always",
-        {
-          "allowLineBreak": true
-        }
-      ]
-    }
-  }
+  "license": "MIT"
 }

@@ -1,0 +1,12 @@
+{
+  "name": "date-time-picker-react",
+  "version": "3.0.0",
+  "source": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "unpkg": "dist/index.umd.js",
+  "scripts": {
+    "build": "microbundle index.js --external=react --compress=false --jsx=React.createElement --name=DateTimePicker --format=modern,umd --globals react=React",
+    "dev": "yarn build --watch"
+  }
+}
