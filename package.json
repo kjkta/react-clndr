@@ -1,17 +1,23 @@
 {
   "name": "react-any-calendar",
-  "source": "index.js",
+  "source": "src/index.js",
   "main": "dist/index.js",
-  "unpkg": "dist/index.umd.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "build": "microbundle src/index.js  --compress=false --jsx=React.createElement --name=ReactAnyCalendar --format=modern,umd",
+    "build": "babel src/index.js -o dist/index.js --source-maps",
     "dev": "yarn build --watch"
   },
   "peerDependencies": {
     "date-fns": "^1.29.0",
-    "react": "16.x"
+    "react": "^16.8.0"
   },
-  "devDependencies": {
+  "dependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-react": "^7.7.4",
     "babel-eslint": "^10.0.1",
     "date-fns": "^1.29.0",
     "eslint": "^5.6.1",
