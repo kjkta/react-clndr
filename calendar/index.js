@@ -576,7 +576,7 @@ export default function Calendar() {
                               top: 0,
                               right: 0,
                               textAlign: "right",
-                              height: 8
+                              minHeight: 8
                             }}
                           >
                             {eventsByDay &&
