@@ -5,7 +5,7 @@ export const daysOfTheWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const getDatesInMonth = date => {
   const firstDayOfMonth = dateFns.startOfMonth(date);
   let weekIndex = 0;
-  return Array.from(Array(dateFns.getDaysInMonth(date)).keys()).map(i => {
+  return Array.from({ length: dateFns.getDaysInMonth(date) }).map((_, i) => {
     const date = dateFns.addDays(firstDayOfMonth, i);
     const dayWeekIndex = dateFns.getDay(date);
     weekIndex = dayWeekIndex === 0 && i != 0 ? weekIndex + 1 : weekIndex;

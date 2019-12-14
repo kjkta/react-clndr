@@ -1,7 +1,7 @@
 # Set up
 
 Build the packages
-`yarn workspaces build`
+`yarn workspaces run build`
 
 Run the demo page (requires a HTTP server)
 `serve .`
