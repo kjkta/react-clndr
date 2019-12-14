@@ -1,0 +1,32 @@
+[data-react-any-calendar-table] {
+  table-layout: fixed;
+}
+
+[data-react-any-calendar-row] {
+  height: 38;
+}
+
+[data-react-any-calendar-heading-cell] {
+  width: 38px;
+  color: #6b6b6b;
+  font-size: 12px;
+  text-align: center;
+}
+
+[data-react-any-calendar-cell] {
+  border: 1px solid transparent;
+  position: relative;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  user-select: none;
+}
+
+[data-react-any-calendar-cell][data-out-of-range] {
+  background-color: #9a9a9a;
+}
+
+[data-react-any-calendar-cell][data-selected] {
+  border: 1px solid #9a9a9a;
+  transition: 100ms border;
+}

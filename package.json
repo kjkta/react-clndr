@@ -1,15 +1,16 @@
 {
-  "name": "react-calendar-stuff",
-  "private": true,
-  "workspaces": [
-    "date-time-picker",
-    "calendar"
-  ],
+  "name": "react-any-calendar",
+  "source": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "unpkg": "dist/index.umd.js",
   "scripts": {
-    "dev": "yarn workspaces run dev"
+    "build": "microbundle src/index.js --external=react --compress=false --jsx=React.createElement --name=ReactAnyCalendar --format=modern,umd --globals react=React",
+    "dev": "yarn build --watch"
   },
   "peerDependencies": {
-    "react": "16.x"
+    "react": "16.x",
+    "date-fns": "^1.29.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
@@ -17,7 +18,6 @@
     "eslint": "^5.6.1",
     "eslint-plugin-flowtype": "^2.50.3",
     "eslint-plugin-react": "^7.11.1",
-    "flow-bin": "^0.82.0",
     "microbundle": "^0.12.0-next.6",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"

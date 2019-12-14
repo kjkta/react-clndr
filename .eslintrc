@@ -1,26 +1,19 @@
 {
-    "parser": "babel-eslint",
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:flowtype/recommended"
-    ],
-    "env": {
-        "browser": true,
-        "es6": true,
-        "jest": true
-    },
-    "plugins": [
-        "react",
-        "flowtype"
-    ],
-    "parserOptions": {
-        "ecmaFeatures": {
-        "jsx": true
-        }
-    },
-    "rules": {
-        "react/prop-types": 0,
-        "react/display-name": 0
+  "parser": "babel-eslint",
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "plugins": ["react"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     }
+  },
+  "rules": {
+    "react/prop-types": 0,
+    "react/display-name": 0
+  }
 }

@@ -1,6 +1,5 @@
-<div id="calendar"></div>
-<div id="dtp"></div>
-
+<div id="root"></div>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 <script
   src="https://unpkg.com/react@16/umd/react.development.js"
   crossorigin
@@ -9,13 +8,42 @@
   src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
   crossorigin
 ></script>
-<script src="./calendar/dist/index.umd.js"></script>
-<script src="./date-time-picker/dist/index.umd.js"></script>
 
-<script type="text/javascript">
-  const calendar = document.getElementById("calendar");
-  ReactDOM.render(React.createElement(Calendar), calendar);
+<link rel="stylesheet" type="text/css" href="./index.css" />
+<script src="./dist/index.umd.js"></script>
 
-  const dtp = document.getElementById("dtp");
-  ReactDOM.render(React.createElement(DateTimePicker), dtp);
+<script type="text/babel">
+  const root = document.getElementById("root");
+  const {
+    Calendar,
+    ChangeMonthButton,
+    CurrentMonth,
+    CalendarMonth,
+    CalendarMonthHeading,
+    CalendarMonthDays,
+    CalendarMonthCell,
+    CalendarMonthDayNumber
+  } = window.ReactAnyCalendar;
+  ReactDOM.render(
+    <Calendar>
+      <ChangeMonthButton interval={-1}>Backward</ChangeMonthButton>
+      <CurrentMonth />
+      <ChangeMonthButton>Forward</ChangeMonthButton>
+      <CalendarMonth>
+        <CalendarMonthHeading />
+        <CalendarMonthDays>
+          {function(weekDays) {
+            return weekDays.map(function(day) {
+              return (
+                <CalendarMonthCell key={day.date} day={day}>
+                  <CalendarMonthDayNumber />
+                </CalendarMonthCell>
+              );
+            });
+          }}
+        </CalendarMonthDays>
+      </CalendarMonth>
+    </Calendar>,
+    root
+  );
 </script>
