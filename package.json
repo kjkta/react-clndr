@@ -2,15 +2,14 @@
   "name": "react-any-calendar",
   "source": "index.js",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "unpkg": "dist/index.umd.js",
   "scripts": {
-    "build": "microbundle src/index.js --external=react --compress=false --jsx=React.createElement --name=ReactAnyCalendar --format=modern,umd --globals react=React",
+    "build": "microbundle src/index.js  --compress=false --jsx=React.createElement --name=ReactAnyCalendar --format=modern,umd",
     "dev": "yarn build --watch"
   },
   "peerDependencies": {
-    "react": "16.x",
-    "date-fns": "^1.29.0"
+    "date-fns": "^1.29.0",
+    "react": "16.x"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
@@ -20,7 +19,8 @@
     "eslint-plugin-react": "^7.11.1",
     "microbundle": "^0.12.0-next.6",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react-dom": "^16.5.2",
+    "release-it": "^12.4.3"
   },
   "author": "Kyle Thomson <kjay.thomson@gmail.com>",
   "license": "MIT"
