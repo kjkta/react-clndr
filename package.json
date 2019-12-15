@@ -4,14 +4,15 @@
   "main": "dist/index.js",
   "files": [
     "dist",
-    "src"
+    "src",
+    "index.css"
   ],
   "scripts": {
     "build": "babel src/index.js -o dist/index.js --source-maps",
     "dev": "yarn build --watch"
   },
   "peerDependencies": {
-    "date-fns": "^1.29.0",
+    "date-fns": "1.29.0",
     "react": "^16.8.0"
   },
   "devDependencies": {

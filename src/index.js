@@ -97,9 +97,15 @@ export function ChangeMonthButton({ interval = 1, children }) {
   );
 }
 
-export function CurrentMonth() {
+export function CurrentMonth({ children }) {
   const { shownMonthDate } = React.useContext(CalendarContext);
-  return <div>{dateFns.format(shownMonthDate, "MMMM YYYY")}</div>;
+  return (
+    <div data-react-any-calendar-current-month="">
+      {children
+        ? children(shownMonthDate)
+        : dateFns.format(shownMonthDate, "MMMM YYYY")}
+    </div>
+  );
 }
 
 export function CalendarMonth({ children }) {
@@ -140,7 +146,7 @@ export function CalendarMonthDays({ children }) {
 
 const CalendarCellContext = React.createContext();
 
-export function CalendarMonthCell({ day, children }) {
+export function CalendarMonthCell({ day, children, ...props }) {
   const { selectedDate, setSelectedDate } = React.useContext(CalendarContext);
 
   // TODO: Implement min and max date ranges
@@ -165,6 +171,7 @@ export function CalendarMonthCell({ day, children }) {
           onClick={function() {
             setSelectedDate(day.date);
           }}
+          {...props}
         >
           {children}
         </td>

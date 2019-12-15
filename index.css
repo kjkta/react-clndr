@@ -3,13 +3,13 @@
 }
 
 [data-react-any-calendar-row] {
-  height: 38;
+  height: 38px;
 }
 
 [data-react-any-calendar-heading-cell] {
   width: 38px;
   color: #6b6b6b;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
 }
 
@@ -29,4 +29,8 @@
 [data-react-any-calendar-cell][data-selected] {
   border: 1px solid #9a9a9a;
   transition: 100ms border;
+}
+
+[data-react-any-calendar-current-month] {
+  font-size: 18px;
 }
