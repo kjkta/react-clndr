@@ -9,8 +9,16 @@ const getDatesInMonth = date => {
     const dayWeekIndex = dateFns.getDay(date);
     weekIndex = dayWeekIndex === 0 && i != 0 ? weekIndex + 1 : weekIndex;
     return {
-      dayWeekIndex,
-      weekIndex,
+      dayWeekIndex:
+        dayWeekIndex === 0
+          ? // Make Monday the first day of the week
+            6
+          : dayWeekIndex - 1,
+      weekIndex:
+        dayWeekIndex === 0
+          ? // Put Sunday in the previous week
+            weekIndex - 1
+          : weekIndex,
       date
     };
   });
