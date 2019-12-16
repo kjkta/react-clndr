@@ -1,5 +1,5 @@
 {
-  "name": "react-any-calendar",
+  "name": "react-clndr",
   "source": "src/index.js",
   "main": "dist/index.js",
   "files": [
