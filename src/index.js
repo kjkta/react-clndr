@@ -54,7 +54,11 @@ const now = new Date();
 const CalendarContext = React.createContext();
 
 export function Calendar({ initialDate = now, onChangeDate, children }) {
-  const [shownMonthDate, setShownMonthDate] = React.useState(initialDate);
+  const [shownMonthDate, setShownMonthDate] = React.useState(
+    initialDate
+      // Set to first day of the month
+      .setDate(1)
+  );
   const [selectedDate, setSelectedDate] = React.useState(initialDate);
 
   React.useEffect(
@@ -63,7 +67,7 @@ export function Calendar({ initialDate = now, onChangeDate, children }) {
         onChangeDate(selectedDate);
       }
     },
-    [selectedDate]
+    [onChangeDate, selectedDate]
   );
 
   return (
