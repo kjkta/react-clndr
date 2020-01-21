@@ -1,12 +1,24 @@
 import React from "react";
-import dateFns from "date-fns";
+import {
+  startOfMonth,
+  getDaysInMonth,
+  addDays,
+  getDay,
+  isSameWeek,
+  format,
+  isAfter,
+  startOfDay,
+  isBefore,
+  endOfDay,
+  isSameDay
+} from "date-fns";
 
 const getDatesInMonth = date => {
-  const firstDayOfMonth = dateFns.startOfMonth(date);
+  const firstDayOfMonth = startOfMonth(date);
   let weekIndex = 0;
-  return Array.from({ length: dateFns.getDaysInMonth(date) }).map((_, i) => {
-    const date = dateFns.addDays(firstDayOfMonth, i);
-    const dayWeekIndex = dateFns.getDay(date);
+  return Array.from({ length: getDaysInMonth(date) }).map((_, i) => {
+    const date = addDays(firstDayOfMonth, i);
+    const dayWeekIndex = getDay(date);
     weekIndex = dayWeekIndex === 0 && i != 0 ? weekIndex + 1 : weekIndex;
     return {
       dayWeekIndex:
@@ -36,7 +48,7 @@ const sortDatesByWeeksNo = days => {
   const numberOfWeeks = days.reduce((n, day, i) => {
     let prevDay = days[i - 1];
     if (prevDay) {
-      let same = dateFns.isSameWeek(prevDay.date, day.date);
+      let same = isSameWeek(prevDay.date, day.date);
       if (!same) {
         return n + 1;
       }
@@ -108,7 +120,7 @@ export function CurrentMonth({ children }) {
     <div data-react-any-calendar-current-month="">
       {children
         ? children(shownMonthDate)
-        : dateFns.format(shownMonthDate, "MMMM YYYY")}
+        : format(shownMonthDate, "MMMM YYYY")}
     </div>
   );
 }
@@ -155,8 +167,8 @@ export function CalendarMonthCell({ day, children, ...props }) {
   const { selectedDate, setSelectedDate } = React.useContext(CalendarContext);
 
   // TODO: Implement min and max date ranges
-  const min = min && dateFns.isAfter(dateFns.startOfDay(min), day.date);
-  const max = max && dateFns.isBefore(dateFns.endOfDay(max), day.date);
+  const min = min && isAfter(startOfDay(min), day.date);
+  const max = max && isBefore(endOfDay(max), day.date);
   if (day.date) {
     return (
       <CalendarCellContext.Provider value={day}>
@@ -165,9 +177,7 @@ export function CalendarMonthCell({ day, children, ...props }) {
           tabIndex="0"
           data-react-any-calendar-cell=""
           data-out-of-range={min || max ? "" : undefined}
-          data-selected={
-            dateFns.isSameDay(day.date, selectedDate) ? "" : undefined
-          }
+          data-selected={isSameDay(day.date, selectedDate) ? "" : undefined}
           onKeyDown={function(e) {
             if (e.key === "Enter") {
               setSelectedDate(day.date);
