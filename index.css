@@ -24,6 +24,8 @@
 
 [data-react-any-calendar-cell][data-out-of-range] {
   background-color: #9a9a9a;
+  color: #9a9a9a;
+  cursor: none;
 }
 
 [data-react-any-calendar-cell][data-selected] {
