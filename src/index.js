@@ -65,13 +65,20 @@ const getDatesByWeekNo = date => sortDatesByWeeksNo(getDatesInMonth(date));
 const now = new Date();
 const CalendarContext = React.createContext();
 
-export function Calendar({ initialDate = now, onChangeDate, children }) {
+export function Calendar({
+  initialDate = now,
+  onChangeDate,
+  min,
+  max,
+  children
+}) {
   const [shownMonthDate, setShownMonthDate] = React.useState(function() {
     // Set to the first day of the month
     let monthDate = new Date(initialDate);
     monthDate.setDate(1);
     return monthDate;
   });
+
   const [selectedDate, setSelectedDate] = React.useState(initialDate);
 
   React.useEffect(
@@ -89,7 +96,9 @@ export function Calendar({ initialDate = now, onChangeDate, children }) {
         shownMonthDate,
         setShownMonthDate,
         selectedDate,
-        setSelectedDate
+        setSelectedDate,
+        min,
+        max
       }}
     >
       {children}
@@ -164,11 +173,13 @@ export function CalendarMonthDays({ children }) {
 const CalendarCellContext = React.createContext();
 
 export function CalendarMonthCell({ day, children, ...props }) {
-  const { selectedDate, setSelectedDate } = React.useContext(CalendarContext);
+  const { selectedDate, setSelectedDate, min, max } = React.useContext(
+    CalendarContext
+  );
 
-  // TODO: Implement min and max date ranges
-  const min = min && isAfter(startOfDay(min), day.date);
-  const max = max && isBefore(endOfDay(max), day.date);
+  const isBeforeMin = min && isBefore(startOfDay(min), day.date);
+  const isAfterMax = max && isAfter(endOfDay(max), day.date);
+  const isInRage = !isBeforeMin || !isAfterMax;
   if (day.date) {
     return (
       <CalendarCellContext.Provider value={day}>
@@ -176,16 +187,24 @@ export function CalendarMonthCell({ day, children, ...props }) {
           key={day.date}
           tabIndex="0"
           data-react-any-calendar-cell=""
-          data-out-of-range={min || max ? "" : undefined}
+          data-out-of-range={isInRage ? "" : undefined}
           data-selected={isSameDay(day.date, selectedDate) ? "" : undefined}
-          onKeyDown={function(e) {
-            if (e.key === "Enter") {
-              setSelectedDate(day.date);
-            }
-          }}
-          onClick={function() {
-            setSelectedDate(day.date);
-          }}
+          onKeyDown={
+            isInRage
+              ? function(e) {
+                  if (e.key === "Enter") {
+                    setSelectedDate(day.date);
+                  }
+                }
+              : undefined
+          }
+          onClick={
+            isInRage
+              ? function() {
+                  setSelectedDate(day.date);
+                }
+              : undefined
+          }
           {...props}
         >
           {children}
