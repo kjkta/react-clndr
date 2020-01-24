@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build": "babel src/index.js -o dist/index.js --source-maps",
-    "dev": "yarn build --watch"
+    "dev": "yarn build --watch",
+    "test": "jest"
   },
   "peerDependencies": {
     "date-fns": "^2.0.0",
@@ -20,6 +21,7 @@
     "@babel/core": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
+    "@testing-library/react": "^9.4.0",
     "babel-eslint": "^10.0.1",
     "date-fns": "^2.9.0",
     "eslint": "^6.8.0",
@@ -27,6 +29,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "jest": "^25.1.0",
     "prettier": "^1.19.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
