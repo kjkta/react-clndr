@@ -179,7 +179,7 @@ export function CalendarMonthCell({ day, children, ...props }) {
 
   const isBeforeMin = min && isAfter(startOfDay(min), day.date);
   const isAfterMax = max && isBefore(endOfDay(max), day.date);
-  const isInRage = !isBeforeMin || !isAfterMax;
+  const isInRage = isBeforeMin || isAfterMax;
   if (day.date) {
     return (
       <CalendarCellContext.Provider value={day}>
