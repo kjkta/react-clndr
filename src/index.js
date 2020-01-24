@@ -177,9 +177,9 @@ export function CalendarMonthCell({ day, children, ...props }) {
     CalendarContext
   );
 
-  const isBeforeMin = min && isAfter(startOfDay(min), day.date);
-  const isAfterMax = max && isBefore(endOfDay(max), day.date);
-  const isInRage = isBeforeMin || isAfterMax;
+  const isBeforeMin = min && isBefore(startOfDay(min), day.date);
+  const isAfterMax = max && isAfter(endOfDay(max), day.date);
+  const isInRage = isBeforeMin && isAfterMax;
   if (day.date) {
     return (
       <CalendarCellContext.Provider value={day}>
@@ -187,7 +187,7 @@ export function CalendarMonthCell({ day, children, ...props }) {
           key={day.date}
           tabIndex="0"
           data-react-any-calendar-cell=""
-          data-out-of-range={isInRage ? "" : undefined}
+          data-out-of-range={!isInRage ? "" : undefined}
           data-selected={isSameDay(day.date, selectedDate) ? "" : undefined}
           onKeyDown={
             isInRage
