@@ -82,6 +82,9 @@ export function Calendar({
 
   const [selectedDate, setSelectedDate] = React.useState(initialDate);
 
+  // Make sure onChangeDate doesn't cause unnessacary hook calls
+  onChangeDate = React.useCallback(onChangeDate, []);
+
   React.useEffect(
     function() {
       if (onChangeDate) {
