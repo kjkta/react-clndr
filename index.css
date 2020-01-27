@@ -1,5 +1,5 @@
 [data-react-any-calendar-table] {
-  table-layout: fixed;
+  width: 100%;
 }
 
 [data-react-any-calendar-row] {
