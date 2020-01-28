@@ -1,6 +1,44 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  waitForDomChange,
+  waitForElement
+} from "@testing-library/react";
 import { Calendar, CalendarMonthCell } from "../";
+
+test("onChangeDate is dispatched when selecting a day", async function() {
+  let today = new Date();
+  let dateAfterToday = new Date();
+  let dayAfterToday = today.getDate() + 1;
+  dateAfterToday = dateAfterToday.setDate(dayAfterToday);
+  let onChange = jest.fn();
+
+  const { getByText, container, debug } = render(
+    <Calendar initialDate={today} onChangeDate={onChange}>
+      <CalendarMonthCell
+        day={{
+          date: today
+        }}
+      >
+        {today.getDate()}
+      </CalendarMonthCell>
+
+      <CalendarMonthCell
+        day={{
+          date: dateAfterToday
+        }}
+      >
+        {dayAfterToday}
+      </CalendarMonthCell>
+    </Calendar>
+  );
+
+  let tomorrowCell = container.getElementsByTagName("td")[1];
+  fireEvent.click(tomorrowCell);
+  expect(tomorrowCell.dataset.selected).toBe("");
+  expect(onChange).toHaveBeenCalledWith(dateAfterToday);
+});
 
 test("it sets the out-of-range data selector correctly for min", function() {
   let dayBeforeMin = new Date();

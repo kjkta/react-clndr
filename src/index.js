@@ -81,25 +81,19 @@ export function Calendar({
 
   const [selectedDate, setSelectedDate] = React.useState(initialDate);
 
-  // Make sure onChangeDate doesn't cause unnessacary hook calls
-  onChangeDate = React.useCallback(onChangeDate, []);
-
-  React.useEffect(
-    function() {
-      if (onChangeDate) {
-        onChangeDate(selectedDate);
-      }
-    },
-    [onChangeDate, selectedDate]
-  );
-
   return (
     <CalendarContext.Provider
       value={{
         shownMonthDate,
         setShownMonthDate,
         selectedDate,
-        setSelectedDate,
+        // Intercept date updates to dispatch onChangeDate
+        setSelectedDate: async function(date) {
+          setSelectedDate(date);
+          if (onChangeDate) {
+            onChangeDate(date);
+          }
+        },
         min,
         max
       }}
