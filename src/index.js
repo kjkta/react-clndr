@@ -1,8 +1,6 @@
 import React from "react";
 import {
-  startOfMonth,
   getDaysInMonth,
-  addDays,
   getDay,
   isSameWeek,
   format,
@@ -13,24 +11,38 @@ import {
   isSameDay
 } from "date-fns";
 
-const getDatesInMonth = date => {
-  const firstDayOfMonth = startOfMonth(date);
+export const getDatesInMonth = date => {
+  let firstDayOfMonth = new Date(date);
+  firstDayOfMonth.setDate(1);
   let weekIndex = 0;
-  return Array.from({ length: getDaysInMonth(date) }).map((_, i) => {
-    const date = addDays(firstDayOfMonth, i);
-    const dayWeekIndex = getDay(date);
-    weekIndex = dayWeekIndex === 0 && i != 0 ? weekIndex + 1 : weekIndex;
+  return Array.from({ length: getDaysInMonth(date) }).map((_, dayIndex) => {
+    // Get the date for this day
+    let date = new Date(firstDayOfMonth);
+    let dayOfMonth = date.getDate() + dayIndex;
+    date.setDate(dayOfMonth);
+
+    let weekdayIndex = getDay(date);
+
+    if (weekdayIndex === 0) {
+      // It's Sunday, increment to the next week
+      weekIndex = weekIndex + 1;
+    }
     return {
-      dayWeekIndex:
-        dayWeekIndex === 0
+      dayOfMonth,
+      weekdayIndex:
+        weekdayIndex === 0
           ? // Make Monday the first day of the week
             6
-          : dayWeekIndex - 1,
+          : weekdayIndex - 1,
       weekIndex:
-        dayWeekIndex === 0
-          ? // Put Sunday in the previous week
+        // It's Sunday
+        weekdayIndex === 0 &&
+        // It's not the first week of the month
+        weekIndex > 0
+          ? // Put the Sunday on the previous week
             weekIndex - 1
-          : weekIndex,
+          : // Continue on the current week
+            weekIndex,
       date
     };
   });
@@ -40,7 +52,7 @@ const getDaysInWeek = days =>
   Array.from({
     length: 7 // There are 7 days in a week
   }).map((_, i) => {
-    const dayInMonth = days.find(({ dayWeekIndex }) => dayWeekIndex === i);
+    const dayInMonth = days.find(({ weekdayIndex }) => weekdayIndex === i);
     return dayInMonth ? dayInMonth : {};
   });
 
@@ -48,8 +60,8 @@ const sortDatesByWeeksNo = days => {
   const numberOfWeeks = days.reduce((n, day, i) => {
     let prevDay = days[i - 1];
     if (prevDay) {
-      let same = isSameWeek(prevDay.date, day.date);
-      if (!same) {
+      let sameWeek = prevDay.weekIndex === day.weekIndex;
+      if (!sameWeek) {
         return n + 1;
       }
     }

@@ -1,11 +1,13 @@
 import React from "react";
+import { render, fireEvent } from "@testing-library/react";
 import {
-  render,
-  fireEvent,
-  waitForDomChange,
-  waitForElement
-} from "@testing-library/react";
-import { Calendar, CalendarMonthCell } from "../";
+  Calendar,
+  CalendarMonthCell,
+  CalendarMonth,
+  CalendarMonthDays,
+  getDatesInMonth
+} from "../";
+import { getDaysInMonth } from "date-fns";
 
 test("onChangeDate is dispatched when selecting a day", async function() {
   let today = new Date();
@@ -194,4 +196,52 @@ test("it sets the out-of-range data selector correctly when there is no max or m
   expect(container.getElementsByTagName("td")[1].dataset.outOfRange).toBe(
     undefined
   );
+});
+
+function getDayListForMonth(date) {
+  return Array.from({ length: getDaysInMonth(date) }).map(
+    (_, dayIndex) => dayIndex + 1
+  );
+}
+
+test("It gets the correct days for each day in the month", function() {
+  Array.from({ length: 12 }).forEach(function(_, monthIndex) {
+    let result = [];
+    let date = new Date();
+    date.setDate(1);
+    date.setMonth(monthIndex);
+    let expectedDays = getDayListForMonth(date);
+    render(
+      <Calendar initialDate={date}>
+        <CalendarMonth>
+          <CalendarMonthDays>
+            {weekDays => {
+              weekDays.forEach(({ dayOfMonth, weekIndex }) => {
+                if (dayOfMonth) {
+                  if (monthIndex === 2) {
+                    console.log(dayOfMonth, weekIndex);
+                  }
+                  result.push(dayOfMonth);
+                }
+              });
+            }}
+          </CalendarMonthDays>
+        </CalendarMonth>
+      </Calendar>
+    );
+    expect(result).toEqual(expectedDays);
+  });
+});
+
+test("getDatesInMonth gets the dates for March", function() {
+  Array.from({ length: 12 }).forEach(function(_, monthIndex) {
+    let date = new Date();
+    date.setDate(1);
+    date.setMonth(monthIndex);
+    let expectedDays = getDayListForMonth(date);
+
+    expect(getDatesInMonth(date).map(({ dayOfMonth }) => dayOfMonth)).toEqual(
+      expectedDays
+    );
+  });
 });
