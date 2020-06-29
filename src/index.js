@@ -77,16 +77,10 @@ const getDatesByWeekNo = date => sortDatesByWeeksNo(getDatesInMonth(date));
 const now = new Date();
 const CalendarContext = React.createContext();
 
-export function Calendar({
-  initialDate = now,
-  onChangeDate,
-  min,
-  max,
-  children
-}) {
+export function Calendar({ initialDate, onChangeDate, min, max, children }) {
   const [shownMonthDate, setShownMonthDate] = React.useState(function() {
     // Set to the first day of the month
-    let monthDate = new Date(initialDate);
+    let monthDate = new Date(initialDate || now);
     monthDate.setDate(1);
     return monthDate;
   });
@@ -198,7 +192,9 @@ export function CalendarMonthCell({ day, children, ...props }) {
           tabIndex="0"
           data-react-any-calendar-cell=""
           data-out-of-range={isInRange ? undefined : ""}
-          data-selected={isSameDay(day.date, selectedDate) ? "" : undefined}
+          data-selected={
+            selectedDate && isSameDay(day.date, selectedDate) ? "" : undefined
+          }
           onKeyDown={
             isInRange
               ? function(e) {
