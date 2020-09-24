@@ -76,29 +76,13 @@ const getDatesByWeekNo = date => sortDatesByWeeksNo(getDatesInMonth(date));
 const now = new Date();
 const CalendarContext = React.createContext();
 
-export function Calendar({
-  initialDate,
-  onChangeDate,
-  onChangeMonth,
-  min,
-  max,
-  children
-}) {
+export function Calendar({ initialDate, onChangeDate, min, max, children }) {
   const [shownMonthDate, setShownMonthDate] = React.useState(function() {
     // Set to the first day of the month
     let monthDate = new Date(initialDate || now);
     monthDate.setDate(1);
     return monthDate;
   });
-
-  React.useEffect(
-    function() {
-      if (onChangeMonth) {
-        onChangeMonth(shownMonthDate);
-      }
-    },
-    [shownMonthDate, onChangeMonth]
-  );
 
   const [selectedDate, setSelectedDate] = React.useState(initialDate);
 
@@ -124,16 +108,18 @@ export function Calendar({
   );
 }
 
-export function ChangeMonthButton({ interval = 1, children }) {
+export function ChangeMonthButton({ interval = 1, onClick, children }) {
   const { setShownMonthDate } = React.useContext(CalendarContext);
   return (
     <button
       type="button"
       data-react-any-calendar-month-button=""
       onClick={function() {
-        setShownMonthDate(
-          date => new Date(date.setMonth(date.getMonth() + interval))
-        );
+        setShownMonthDate(date => {
+          const newDate = new Date(date.setMonth(date.getMonth() + interval));
+          onClick(newDate);
+          return newDate;
+        });
       }}
     >
       {children}
