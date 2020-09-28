@@ -117,7 +117,10 @@ export function ChangeMonthButton({ interval = 1, onClick, children }) {
       onClick={function() {
         setShownMonthDate(date => {
           const newDate = new Date(date.setMonth(date.getMonth() + interval));
-          onClick(newDate);
+          if (onClick) {
+            // Fire callback
+            onClick(newDate);
+          }
           return newDate;
         });
       }}
