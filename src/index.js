@@ -187,6 +187,7 @@ export function CalendarMonthCell({ day, children, ...props }) {
   const isBeforeMin = min && isBefore(day.date, startOfDay(min));
   const isAfterMax = max && isAfter(day.date, endOfDay(max));
   const isInRange = !isBeforeMin && !isAfterMax;
+  const now = new Date();
 
   if (day.date) {
     return (
@@ -196,6 +197,7 @@ export function CalendarMonthCell({ day, children, ...props }) {
           tabIndex="0"
           data-react-any-calendar-cell=""
           data-out-of-range={isInRange ? undefined : ""}
+          data-current-day={isSameDay(day.date, now) ? "" : undefined}
           data-selected={
             selectedDate && isSameDay(day.date, selectedDate) ? "" : undefined
           }
