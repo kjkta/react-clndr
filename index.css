@@ -23,10 +23,13 @@
 }
 
 [data-react-any-calendar-cell][data-out-of-range] {
-  background-color: rgba(154, 154, 154, 0.5);
   color: #9a9a9a;
   border: none;
   cursor: initial;
+}
+
+[data-react-any-calendar-cell][data-current-day] {
+  color:#2684ff;
 }
 
 [data-react-any-calendar-cell][data-selected] {
